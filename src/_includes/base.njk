@@ -185,6 +185,7 @@
     <link rel="alternate" hreflang="x-default" href="{{ meta.url }}{{ page.url | locale_url('en') | url }}"/>
     <link rel="canonical" href="{{ meta.url }}{{ page.url | url }}"/>
     <meta name="description" content="{% if description %} {{ description }} {% else %} {{ meta.siteDescription }} {% endif %}"/>
+    {% if keywords %}<meta name="keywords" content="{{ keywords | join(', ') }}"/>{% endif %}
     <meta name="generator" content="{{ eleventy.generator }}"/>
     <meta property="og:site_name" content="{{ meta.siteName }}"/>
     <meta property="og:title" content="{{ title }} | {{ meta.siteName }}"/>
