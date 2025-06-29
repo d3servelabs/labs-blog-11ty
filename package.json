@@ -23,6 +23,7 @@
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
     "@vercel/og": "^0.6.8",
-    "gray-matter": "^4.0.3"
+    "gray-matter": "^4.0.3",
+    "puppeteer": "^24.11.1"
   }
 }

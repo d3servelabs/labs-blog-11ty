@@ -18,6 +18,15 @@ const logoBuffer = readFileSync(logoPath)
 const logoBase64 = logoBuffer.toString('base64')
 const logoDataUrl = `data:image/png;base64,${logoBase64}`
 
+// 加载 Noto Naskh Arabic 字体（仅用于阿拉伯语）
+const notoNaskhArabicFontPath = join(projectRoot, 'public', 'fonts', 'NotoNaskhArabic-Regular.ttf')
+let notoNaskhArabicFontBuffer = null
+try {
+  notoNaskhArabicFontBuffer = readFileSync(notoNaskhArabicFontPath)
+} catch (e) {
+  console.warn('Noto Naskh Arabic font not found, Arabic OG images may not render correctly.')
+}
+
 // OG image 生成组件，logo 用 Namefi.png
 function generateOGImageJSX(title, language) {
   // RTL 语言列表
@@ -25,9 +34,11 @@ function generateOGImageJSX(title, language) {
   const isRTL = rtlLanguages.includes(language)
   
   // 为 RTL 语言使用简化的字体配置
-  const fontFamily = isRTL 
-    ? 'system-ui, -apple-system, sans-serif'
-    : 'Inter, "Segoe UI", system-ui, sans-serif'
+  const fontFamily = language === 'ar'
+    ? 'Noto Naskh Arabic, system-ui, -apple-system, sans-serif'
+    : isRTL 
+      ? 'system-ui, -apple-system, sans-serif'
+      : 'Inter, "Segoe UI", system-ui, sans-serif'
   
   return {
     type: 'div',
@@ -158,10 +169,22 @@ function generateSimpleOGImageJSX(title, language) {
 async function generateOGImage(title, language) {
   try {
     const jsx = generateOGImageJSX(title, language)
-    const imageResponse = new ImageResponse(jsx, {
+    const imageOptions = {
       width: 1200,
       height: 630,
-    })
+    }
+    // 如果是阿拉伯语，传递字体
+    if (language === 'ar' && notoNaskhArabicFontBuffer) {
+      imageOptions.fonts = [
+        {
+          name: 'Noto Naskh Arabic',
+          data: notoNaskhArabicFontBuffer,
+          weight: 400,
+          style: 'normal',
+        },
+      ]
+    }
+    const imageResponse = new ImageResponse(jsx, imageOptions)
     const arrayBuffer = await imageResponse.arrayBuffer()
     return Buffer.from(arrayBuffer)
   } catch (error) {
