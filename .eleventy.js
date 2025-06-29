@@ -6,15 +6,19 @@ export default async function (eleventyConfig) {
     errorMode: 'allow-fallback' // Opting out of "strict"
   });
 
+  // Copy individual files that should be in the output
   eleventyConfig.addPassthroughCopy('src/favicon.ico');
+  eleventyConfig.addPassthroughCopy('src/opengraph.jpg');
 
-  ['src/favicon.ico', 'src/opengraph.jpg'].forEach(item =>
-    eleventyConfig.addPassthroughCopy(item)
-  );
-
-  // Copy public directory for static assets like OG images
+  // Always copy public directory for static assets like OG images
   eleventyConfig.addPassthroughCopy({
-    'public': '/'
+    'public': '.'
+  });
+
+  // Configure dev server to also serve static files from public directory
+  eleventyConfig.setServerOptions({
+    // Serve additional directories during development
+    additional: ["./public"]
   });
 
   return {
