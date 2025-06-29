@@ -16,7 +16,7 @@
     "node": ">=18.x.x"
   },
   "scripts": {
-    "start": "eleventy --serve --watch",
+    "start": "eleventy --serve --watch --pathprefix=/b/",
     "build": "node scripts/prebuild-og-images.mjs && eleventy"
   },
   "dependencies": {

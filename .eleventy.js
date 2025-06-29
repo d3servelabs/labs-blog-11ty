@@ -12,12 +12,18 @@ export default async function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy(item)
   );
 
+  // Copy public directory for static assets like OG images
+  eleventyConfig.addPassthroughCopy({
+    'public': '/'
+  });
+
   return {
     dir: {
       input: 'src',
       output: 'dist'
     },
     markdownTemplateEngine: 'njk',
-    htmlTemplateEngine: 'njk'
+    htmlTemplateEngine: 'njk',
+    pathPrefix: '/b/'
   };
 }

@@ -18,24 +18,24 @@
     <link
       rel="alternate"
       hreflang="{{ page.lang }}"
-      href="{{ meta.url }}{{ page.url }}"
+      href="{{ meta.url }}{{ page.url | url }}"
     />
 
     {% for link in page.url | locale_links %}
     <link
       rel="alternate"
       hreflang="{{ link.lang }}"
-      href="{{ meta.url }}{{ link.url }}"
+      href="{{ meta.url }}{{ link.url | url }}"
     />
     {% endfor %}
 
     <link
       rel="alternate"
       hreflang="x-default"
-      href="{{ meta.url }}{{ page.url | locale_url('en') }}"
+      href="{{ meta.url }}{{ page.url | locale_url('en') | url }}"
     />
 
-    <link rel="canonical" href="{{ meta.url }}{{ page.url }}" />
+    <link rel="canonical" href="{{ meta.url }}{{ page.url | url }}" />
     <meta
       name="description"
       content="{% if description %}
@@ -49,9 +49,9 @@
     <meta property="og:title" content="{{ title }} | {{ meta.siteName }}" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="{{ description or meta.siteDescription }}" />
-    <meta property="og:url" content="{{ meta.url }}{{ page.url }}" />
+    <meta property="og:url" content="{{ meta.url }}{{ page.url | url }}" />
     <meta property="og:locale" content="{{ page.lang }}" />
-    <meta property="og:image" content="{{ meta.url }}{{ meta.ogImage }}" />
+    <meta property="og:image" content="{{ meta.url }}{{ meta.ogImage | url }}" />
   </head>
 
   <body>

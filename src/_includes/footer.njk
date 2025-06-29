@@ -4,7 +4,7 @@
   <nav id="footer" aria-label="{{ languages[page.lang].ariaLang }}">
     {% for link in page.url | locale_links %} {%- if not loop.first %}/{% endif %}
 
-    <a href="{{ link.url }}" lang="{{ link.lang }}" hreflang="{{ link.lang }}">{{
+    <a href="{{ link.url | url }}" lang="{{ link.lang }}" hreflang="{{ link.lang }}">{{
       link.label
     }}</a>
     {% endfor %}
@@ -14,12 +14,12 @@
 <!-- alternative language switcher -->
 <!-- <footer>
   <nav id="footer" aria-label="{{ languages[page.lang].ariaLang }}">
-    <a href="{{ page.url }}" lang="{{ page.lang }}" hreflang="{{ page.lang }}">
+    <a href="{{ page.url | url }}" lang="{{ page.lang }}" hreflang="{{ page.lang }}">
       {{ page.lang | upper }}
     </a>
 
     {% for link in page.url | locale_links %}
-    <a href="{{ link.url }}" lang="{{ link.lang }}" hreflang="{{ link.lang }}">
+    <a href="{{ link.url | url }}" lang="{{ link.lang }}" hreflang="{{ link.lang }}">
       {{ link.lang | upper }}</a
     >
     {% endfor %}
