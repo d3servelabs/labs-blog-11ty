@@ -1,12 +1,12 @@
 export default {
   en: [
     {
-      text: 'Home',
-      url: '/en/'
+      text: 'Namefi App',
+      url: 'https://namefi.io'
     },
     {
-      text: 'About me',
-      url: '/en/about-me/'
+      text: 'Home',
+      url: '/en/'
     }
   ],
   es: [
