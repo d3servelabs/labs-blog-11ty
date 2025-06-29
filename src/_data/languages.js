@@ -19,12 +19,5 @@ export default {
     skipText: 'Saltar al contenido principal',
     ariaPrimary: 'Primario',
     ariaLang: 'Cambiar idioma'
-  },
-  fa: {
-    dir: 'rtl',
-    availableText: 'زبان های دیگری برای این صفحه فراهم است از جمله:',
-    skipText: 'پرش به محتوای اصلی',
-    ariaPrimary: 'اصلی',
-    ariaLang: 'تغییر زبان'
   }
 };
