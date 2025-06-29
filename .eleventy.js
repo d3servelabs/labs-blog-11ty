@@ -18,7 +18,8 @@ export default async function (eleventyConfig) {
   // Configure dev server to also serve static files from public directory
   eleventyConfig.setServerOptions({
     // Serve additional directories during development
-    additional: ["./public"]
+    additional: ["./public"],
+    port: process.env.PORT ? Number(process.env.PORT) : 8080
   });
 
   return {
