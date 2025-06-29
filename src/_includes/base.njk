@@ -48,15 +48,19 @@
     <meta property="og:site_name" content="{{ meta.siteName }}" />
     <meta property="og:title" content="{{ title }} | {{ meta.siteName }}" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="{{ page.lang }}" />
     <meta property="og:description" content="{{ description or meta.siteDescription }}" />
     <meta property="og:url" content="{{ meta.url }}{{ page.url | url }}" />
     <meta property="og:locale" content="{{ page.lang }}" />
     <meta property="og:image" content="{{ meta.url }}{{ meta.ogImage | url }}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@namefi_io" />
-    <meta name="twitter:title" content="{{ title }} | {{ meta.siteName }}" />
-    <meta name="twitter:description" content="{{ description or meta.siteDescription }}" />
-    <meta name="twitter:image" content="{{ meta.url }}{{ meta.ogImage | url }}" />
+    <meta name="twitter:label1" content="@Written by" />
+    <meta name="twitter:data1" content="Namefi" />
+    <meta name="twitter:label2" content="Est. reading time" />
+    <meta name="twitter:data2" content="1 min" />
   </head>
 
   <body>
