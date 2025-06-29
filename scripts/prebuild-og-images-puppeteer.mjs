@@ -11,6 +11,9 @@ const logoPath = join(projectRoot, '..', 'Namefi.png')
 const logoBase64 = readFileSync(logoPath).toString('base64')
 const logoDataUrl = `data:image/png;base64,${logoBase64}`
 
+// Concurrency limit - adjust based on your system's capability
+const CONCURRENCY_LIMIT = 50
+
 // Language configurations
 const languageConfigs = {
   ar: {
@@ -62,7 +65,7 @@ function getAllMarkdownFiles(dirPath, basePath = '') {
   return files
 }
 
-async function generateOGWithPuppeteer(title, lang, relativePathWithoutExt) {
+async function generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt) {
   const config = languageConfigs[lang] || languageConfigs.default
   const { fontUrl, fontFamily, isRTL } = config
   
@@ -127,54 +130,102 @@ async function generateOGWithPuppeteer(title, lang, relativePathWithoutExt) {
     </html>
   `
 
-  const browser = await puppeteer.launch({ headless: 'new', args: ['--font-render-hinting=none'] })
   const page = await browser.newPage()
-  await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 })
-  await page.setContent(html, { waitUntil: 'networkidle0' })
-  // Wait for font to load
-  await page.evaluate(async () => { await document.fonts.ready })
+  try {
+    await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 })
+    await page.setContent(html, { waitUntil: 'networkidle0' })
+    // Wait for font to load
+    await page.evaluate(async () => { await document.fonts.ready })
 
-  // PNG
-  await page.screenshot({ path: outBase + '.png', type: 'png', })
-  // JPG
-  await page.screenshot({ path: outBase + '.jpg', type: 'jpeg', quality: 66 })
+    // PNG
+    await page.screenshot({ path: outBase + '.png', type: 'png', })
+    // JPG
+    await page.screenshot({ path: outBase + '.jpg', type: 'jpeg', quality: 66 })
 
-  await browser.close()
-  console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png and .jpg (${title})`)
+    console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png and .jpg (${title})`)
+  } finally {
+    await page.close()
+  }
+}
+
+// Concurrent processing with limited concurrency
+async function processConcurrently(tasks, concurrencyLimit) {
+  const results = []
+  const executing = []
+
+  for (const task of tasks) {
+    const promise = task().then(result => {
+      executing.splice(executing.indexOf(promise), 1)
+      return result
+    })
+    
+    results.push(promise)
+    executing.push(promise)
+
+    if (executing.length >= concurrencyLimit) {
+      await Promise.race(executing)
+    }
+  }
+
+  return Promise.all(results)
 }
 
 // 处理所有语言下 blog 目录的所有 .md 文件（包括子目录）
 const languages = ['en', 'zh', 'ar', 'de', 'es', 'fr', 'hi', 'fa']
 
 async function main() {
-  for (const lang of languages) {
-    const blogDir = join(projectRoot, '..', 'src', lang, 'blog')
-    let markdownFiles
-    try {
-      markdownFiles = getAllMarkdownFiles(blogDir)
-    } catch (e) {
-      console.warn(`No blog dir for language: ${lang}`)
-      continue
-    }
-    
-    console.log(`Found ${markdownFiles.length} markdown files in ${lang}/blog/`)
-    
-    for (const fileInfo of markdownFiles) {
-      const raw = readFileSync(fileInfo.fullPath, 'utf-8')
-      const { data } = matter(raw)
-      const title = data.title || 'Untitled'
-      
-      // 获取相对路径（不包含文件扩展名）用于输出路径
-      const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
-      
+  console.log('🚀 Starting Puppeteer browser...')
+  const browser = await puppeteer.launch({ 
+    headless: 'new', 
+    args: ['--font-render-hinting=none', '--no-sandbox', '--disable-setuid-sandbox'] 
+  })
+
+  try {
+    // Collect all tasks first
+    const allTasks = []
+    let totalFiles = 0
+
+    for (const lang of languages) {
+      const blogDir = join(projectRoot, '..', 'src', lang, 'blog')
+      let markdownFiles
       try {
-        await generateOGWithPuppeteer(title, lang, relativePathWithoutExt)
+        markdownFiles = getAllMarkdownFiles(blogDir)
       } catch (e) {
-        console.error(`❌ Failed: ${lang}/blog/${relativePathWithoutExt}.png/.jpg (${title})`)
-        console.error(`   Reason: ${e.message}`)
+        console.warn(`No blog dir for language: ${lang}`)
+        continue
+      }
+      
+      console.log(`Found ${markdownFiles.length} markdown files in ${lang}/blog/`)
+      totalFiles += markdownFiles.length
+      
+      for (const fileInfo of markdownFiles) {
+        const raw = readFileSync(fileInfo.fullPath, 'utf-8')
+        const { data } = matter(raw)
+        const title = data.title || 'Untitled'
+        const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
+        
+        // Create a task function for this file
+        allTasks.push(async () => {
+          try {
+            await generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt)
+          } catch (e) {
+            console.error(`❌ Failed: ${lang}/blog/${relativePathWithoutExt}.png/.jpg (${title})`)
+            console.error(`   Reason: ${e.message}`)
+          }
+        })
       }
     }
+
+    console.log(`🔄 Processing ${totalFiles} files with concurrency limit of ${CONCURRENCY_LIMIT}...`)
+    
+    // Process all tasks concurrently with limit
+    await processConcurrently(allTasks, CONCURRENCY_LIMIT)
+
+  } finally {
+    console.log('🔒 Closing browser...')
+    await browser.close()
   }
+  
   console.log('🎉 Puppeteer OG images generated!')
 }
 
