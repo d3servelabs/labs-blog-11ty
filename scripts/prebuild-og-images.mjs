@@ -1,211 +1,40 @@
 #!/usr/bin/env node
 
-import { writeFileSync, mkdirSync, readdirSync, readFileSync } from 'fs'
-import { dirname, join, extname, basename } from 'path'
+import puppeteer from 'puppeteer'
+import { readFileSync, mkdirSync, writeFileSync, readdirSync } from 'fs'
+import { join, dirname, basename, extname } from 'path'
 import matter from 'gray-matter'
-import { fileURLToPath } from 'url'
 
-// 用于生成图片的 ImageResponse（需安装 @vercel/og）
-import { ImageResponse } from '@vercel/og'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const projectRoot = join(__dirname, '..')
-const outputDir = join(projectRoot, 'public', 'og')
-
-// 读取 Namefi.png 并转为 base64 DataURL
-const logoPath = join(projectRoot, 'Namefi.png')
-const logoBuffer = readFileSync(logoPath)
-const logoBase64 = logoBuffer.toString('base64')
+const projectRoot = dirname(new URL(import.meta.url).pathname)
+const outputDir = join(projectRoot, '..', 'public', 'og')
+const logoPath = join(projectRoot, '..', 'Namefi.png')
+const logoBase64 = readFileSync(logoPath).toString('base64')
 const logoDataUrl = `data:image/png;base64,${logoBase64}`
 
-// 加载 Noto Naskh Arabic 字体（仅用于阿拉伯语）
-const notoNaskhArabicFontPath = join(projectRoot, 'public', 'fonts', 'NotoNaskhArabic-Regular.ttf')
-let notoNaskhArabicFontBuffer = null
-try {
-  notoNaskhArabicFontBuffer = readFileSync(notoNaskhArabicFontPath)
-} catch (e) {
-  console.warn('Noto Naskh Arabic font not found, Arabic OG images may not render correctly.')
-}
+// Concurrency limit - adjust based on your system's capability
+const CONCURRENCY_LIMIT = 50
 
-// OG image 生成组件，logo 用 Namefi.png
-function generateOGImageJSX(title, language) {
-  // RTL 语言列表
-  const rtlLanguages = ['ar', 'fa', 'he']
-  const isRTL = rtlLanguages.includes(language)
-  
-  // 为 RTL 语言使用简化的字体配置
-  const fontFamily = language === 'ar'
-    ? 'Noto Naskh Arabic, system-ui, -apple-system, sans-serif'
-    : isRTL 
-      ? 'system-ui, -apple-system, sans-serif'
-      : 'Inter, "Segoe UI", system-ui, sans-serif'
-  
-  return {
-    type: 'div',
-    props: {
-      style: {
-        width: '1200px',
-        height: '630px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: isRTL ? 'flex-end' : 'flex-start',
-        justifyContent: 'space-between',
-        padding: '80px',
-        fontFamily: fontFamily,
-        position: 'relative',
-        background: 'radial-gradient(ellipse 120% 120% at 30% 70%, #0f3d2e 0%, #000000 100%)',
-        direction: isRTL ? 'rtl' : 'ltr',
-      },
-      children: [
-        {
-          type: 'div',
-          props: {
-            style: {
-              fontSize: 72,
-              fontWeight: 800,
-              color: '#ffffff',
-              lineHeight: 1.1,
-              marginBottom: 'auto',
-              maxWidth: '85%',
-              wordWrap: 'break-word',
-              textShadow: '0 2px 20px rgba(0, 0, 0, 0.5)',
-              letterSpacing: isRTL ? '0' : '-0.02em',
-              textAlign: isRTL ? 'right' : 'left',
-              direction: isRTL ? 'rtl' : 'ltr',
-            },
-            children: title,
-          },
-        },
-        {
-          type: 'div',
-          props: {
-            style: {
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: isRTL ? 'flex-start' : 'flex-end',
-              width: '100%',
-            },
-            children: [
-              {
-                type: 'img',
-                props: {
-                  src: logoDataUrl,
-                  style: {
-                    height: '80px',
-                    display: 'block'
-                  }
-                }
-              }
-            ],
-          },
-        },
-      ],
-    },
-  }
-}
-
-// 简化版本的 OG 图片生成（用于复杂文字系统的后备方案）
-function generateSimpleOGImageJSX(title, language) {
-  return {
-    type: 'div',
-    props: {
-      style: {
-        width: '1200px',
-        height: '630px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '80px',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        position: 'relative',
-        background: 'radial-gradient(ellipse 120% 120% at 30% 70%, #0f3d2e 0%, #000000 100%)',
-      },
-      children: [
-        {
-          type: 'div',
-          props: {
-            style: {
-              fontSize: 48,
-              fontWeight: 700,
-              color: '#ffffff',
-              lineHeight: 1.2,
-              textAlign: 'center',
-              maxWidth: '90%',
-              marginBottom: '40px',
-              textShadow: '0 2px 20px rgba(0, 0, 0, 0.5)',
-            },
-            children: 'Namefi Blog',
-          },
-        },
-        {
-          type: 'div',
-          props: {
-            style: {
-              fontSize: 24,
-              color: '#cccccc',
-              textAlign: 'center',
-              maxWidth: '80%',
-            },
-            children: `Content in ${language.toUpperCase()}`,
-          },
-        },
-        {
-          type: 'img',
-          props: {
-            src: logoDataUrl,
-            style: {
-              height: '60px',
-              marginTop: '40px',
-              display: 'block'
-            }
-          }
-        }
-      ],
-    },
-  }
-}
-
-async function generateOGImage(title, language) {
-  try {
-    const jsx = generateOGImageJSX(title, language)
-    const imageOptions = {
-      width: 1200,
-      height: 630,
-    }
-    // 如果是阿拉伯语，传递字体
-    if (language === 'ar' && notoNaskhArabicFontBuffer) {
-      imageOptions.fonts = [
-        {
-          name: 'Noto Naskh Arabic',
-          data: notoNaskhArabicFontBuffer,
-          weight: 400,
-          style: 'normal',
-        },
-      ]
-    }
-    const imageResponse = new ImageResponse(jsx, imageOptions)
-    const arrayBuffer = await imageResponse.arrayBuffer()
-    return Buffer.from(arrayBuffer)
-  } catch (error) {
-    // 对于复杂文字系统，尝试使用简化版本
-    if (['ar', 'fa'].includes(language) && error.message.includes('lookupType')) {
-      console.warn(`⚠️  Using simplified OG image for ${language} due to text rendering limitations`)
-      try {
-        const simpleJsx = generateSimpleOGImageJSX(title, language)
-        const imageResponse = new ImageResponse(simpleJsx, {
-          width: 1200,
-          height: 630,
-        })
-        const arrayBuffer = await imageResponse.arrayBuffer()
-        return Buffer.from(arrayBuffer)
-      } catch (fallbackError) {
-        console.error(`Fallback also failed for "${title}" (${language}):`, fallbackError)
-        throw fallbackError
-      }
-    }
-    console.error(`Error generating OG image for "${title}" (${language}):`, error)
-    throw error
+// Language configurations
+const languageConfigs = {
+  ar: {
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@700&display=swap',
+    fontFamily: 'Noto Naskh Arabic, system-ui, sans-serif',
+    isRTL: true,
+  },
+  fa: {
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@700&display=swap',
+    fontFamily: 'Noto Naskh Arabic, system-ui, sans-serif',
+    isRTL: true,
+  },
+  he: {
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@700&display=swap',
+    fontFamily: 'Noto Sans Hebrew, system-ui, sans-serif',
+    isRTL: true,
+  },
+  default: {
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap',
+    fontFamily: 'Inter, Segoe UI, system-ui, sans-serif',
+    isRTL: false,
   }
 }
 
@@ -236,49 +65,168 @@ function getAllMarkdownFiles(dirPath, basePath = '') {
   return files
 }
 
+async function generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt) {
+  const config = languageConfigs[lang] || languageConfigs.default
+  const { fontUrl, fontFamily, isRTL } = config
+  
+  const outDir = join(outputDir, lang, 'blog', dirname(relativePathWithoutExt))
+  mkdirSync(outDir, { recursive: true })
+  const outBase = join(outDir, basename(relativePathWithoutExt))
+
+  const html = `
+    <html lang="${lang}">
+      <head>
+        <meta charset="utf-8" />
+        <link href="${fontUrl}" rel="stylesheet" />
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            display: flex;
+            flex-direction: column;
+            align-items: ${isRTL ? 'flex-end' : 'flex-start'};
+            justify-content: space-between;
+            padding: 80px;
+            font-family: ${fontFamily};
+            /* background: radial-gradient(ellipse 120% 120% at 30% 70%, #0f3d2e 0%, #000 100%); */
+            background-color: #0f3d2e;
+            direction: ${isRTL ? 'rtl' : 'ltr'};
+            box-sizing: border-box;
+            position: relative;
+          }
+          .title {
+            font-size: 72px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: auto;
+            max-width: 85%;
+            word-wrap: break-word;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+            letter-spacing: ${isRTL ? '0' : '-0.02em'};
+            text-align: ${isRTL ? 'right' : 'left'};
+            direction: ${isRTL ? 'rtl' : 'ltr'};
+          }
+          .footer {
+            display: flex;
+            align-items: center;
+            justify-content: ${isRTL ? 'flex-start' : 'flex-end'};
+            width: 100%;
+          }
+          .logo {
+            height: 80px;
+            display: block;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="title">${title}</div>
+        <div class="footer">
+          <img class="logo" src="${logoDataUrl}" />
+        </div>
+      </body>
+    </html>
+  `
+
+  const page = await browser.newPage()
+  try {
+    await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 })
+    await page.setContent(html, { waitUntil: 'networkidle0' })
+    // Wait for font to load
+    await page.evaluate(async () => { await document.fonts.ready })
+
+    // PNG
+    await page.screenshot({ path: outBase + '.png', type: 'png', })
+    // JPG
+    await page.screenshot({ path: outBase + '.jpg', type: 'jpeg', quality: 66 })
+
+    console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png and .jpg (${title})`)
+  } finally {
+    await page.close()
+  }
+}
+
+// Concurrent processing with limited concurrency
+async function processConcurrently(tasks, concurrencyLimit) {
+  const results = []
+  const executing = []
+
+  for (const task of tasks) {
+    const promise = task().then(result => {
+      executing.splice(executing.indexOf(promise), 1)
+      return result
+    })
+    
+    results.push(promise)
+    executing.push(promise)
+
+    if (executing.length >= concurrencyLimit) {
+      await Promise.race(executing)
+    }
+  }
+
+  return Promise.all(results)
+}
+
 // 处理所有语言下 blog 目录的所有 .md 文件（包括子目录）
 const languages = ['en', 'zh', 'ar', 'de', 'es', 'fr', 'hi', 'fa']
 
 async function main() {
-  for (const lang of languages) {
-    const blogDir = join(projectRoot, 'src', lang, 'blog')
-    let markdownFiles
-    try {
-      markdownFiles = getAllMarkdownFiles(blogDir)
-    } catch (e) {
-      console.warn(`No blog dir for language: ${lang}`)
-      continue
-    }
-    
-    console.log(`Found ${markdownFiles.length} markdown files in ${lang}/blog/`)
-    
-    for (const fileInfo of markdownFiles) {
-      const raw = readFileSync(fileInfo.fullPath, 'utf-8')
-      const { data } = matter(raw)
-      const title = data.title || 'Untitled'
-      
-      // 获取相对路径（不包含文件扩展名）用于输出路径
-      const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
-      const outDir = join(outputDir, lang, 'blog', dirname(relativePathWithoutExt))
-      mkdirSync(outDir, { recursive: true })
-      const outPath = join(outDir, `${basename(relativePathWithoutExt)}.png`)
-      
+  console.log('🚀 Starting Puppeteer browser...')
+  const browser = await puppeteer.launch({ 
+    headless: 'new', 
+    args: ['--font-render-hinting=none', '--no-sandbox', '--disable-setuid-sandbox'] 
+  })
+
+  try {
+    // Collect all tasks first
+    const allTasks = []
+    let totalFiles = 0
+
+    for (const lang of languages) {
+      const blogDir = join(projectRoot, '..', 'src', lang, 'blog')
+      let markdownFiles
       try {
-        const imageBuffer = await generateOGImage(title, lang)
-        writeFileSync(outPath, imageBuffer)
-        console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png (${title})`)
+        markdownFiles = getAllMarkdownFiles(blogDir)
       } catch (e) {
-        console.error(`❌ Failed: ${lang}/blog/${relativePathWithoutExt}.png (${title})`)
-        console.error(`   Reason: ${e.message}`)
+        console.warn(`No blog dir for language: ${lang}`)
+        continue
+      }
+      
+      console.log(`Found ${markdownFiles.length} markdown files in ${lang}/blog/`)
+      totalFiles += markdownFiles.length
+      
+      for (const fileInfo of markdownFiles) {
+        const raw = readFileSync(fileInfo.fullPath, 'utf-8')
+        const { data } = matter(raw)
+        const title = data.title || 'Untitled'
+        const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
         
-        // 对于RTL语言的字体问题，提供额外说明
-        if (['ar', 'fa'].includes(lang) && e.message.includes('lookupType')) {
-          console.error(`   Note: ${lang} language has complex text rendering requirements that may not be fully supported.`)
-        }
+        // Create a task function for this file
+        allTasks.push(async () => {
+          try {
+            await generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt)
+          } catch (e) {
+            console.error(`❌ Failed: ${lang}/blog/${relativePathWithoutExt}.png/.jpg (${title})`)
+            console.error(`   Reason: ${e.message}`)
+          }
+        })
       }
     }
+
+    console.log(`🔄 Processing ${totalFiles} files with concurrency limit of ${CONCURRENCY_LIMIT}...`)
+    
+    // Process all tasks concurrently with limit
+    await processConcurrently(allTasks, CONCURRENCY_LIMIT)
+
+  } finally {
+    console.log('🔒 Closing browser...')
+    await browser.close()
   }
-  console.log('🎉 Done!')
+  
+  console.log('🎉 Puppeteer OG images generated!')
 }
 
 main() 
