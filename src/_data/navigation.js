@@ -9,24 +9,64 @@ export default {
       url: '/en/'
     }
   ],
-  es: [
+  ar: [
     {
-      text: 'Inicio',
-      url: '/es/'
+      text: 'تطبيق نيمفاي',
+      url: 'https://namefi.io'
     },
     {
-      text: 'Sobre mí',
-      url: '/es/sobre-mi/'
+      text: 'الرئيسية',
+      url: '/ar/'
     }
   ],
   de: [
     {
-      text: 'Startseite',
-      url: '/de/'
+      text: 'Namefi App',
+      url: 'https://namefi.io'
     },
     {
-      text: 'Über mich',
-      url: '/de/ueber-mich/'
+      text: 'Startseite',
+      url: '/de/'
+    }
+  ],
+  es: [
+    {
+      text: 'Aplicación Namefi',
+      url: 'https://namefi.io'
+    },
+    {
+      text: 'Inicio',
+      url: '/es/'
+    }
+  ],
+  fr: [
+    {
+      text: 'Application Namefi',
+      url: 'https://namefi.io'
+    },
+    {
+      text: 'Accueil',
+      url: '/fr/'
+    }
+  ],
+  hi: [
+    {
+      text: 'नेमफाई ऐप',
+      url: 'https://namefi.io'
+    },
+    {
+      text: 'होम',
+      url: '/hi/'
+    }
+  ],
+  zh: [
+    {
+      text: 'Namefi 应用',
+      url: 'https://namefi.io'
+    },
+    {
+      text: '首页',
+      url: '/zh/'
     }
   ]
 };
