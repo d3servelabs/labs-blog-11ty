@@ -1,40 +1,74 @@
 #!/usr/bin/env node
 
 import puppeteer from 'puppeteer'
-import { readFileSync, mkdirSync, writeFileSync } from 'fs'
-import { join, dirname, basename } from 'path'
+import { readFileSync, mkdirSync, writeFileSync, readdirSync } from 'fs'
+import { join, dirname, basename, extname } from 'path'
 import matter from 'gray-matter'
 
 const projectRoot = dirname(new URL(import.meta.url).pathname)
-const outputDir = join(projectRoot, '..', 'public', 'og-puppeteer')
+const outputDir = join(projectRoot, '..', 'public', 'og')
 const logoPath = join(projectRoot, '..', 'Namefi.png')
 const logoBase64 = readFileSync(logoPath).toString('base64')
 const logoDataUrl = `data:image/png;base64,${logoBase64}`
 
-const files = [
-  {
-    lang: 'ar',
-    path: join(projectRoot, '..', 'src', 'ar', 'blog', 'domain-terminology-guide.md'),
+// Language configurations
+const languageConfigs = {
+  ar: {
     fontUrl: 'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@700&display=swap',
     fontFamily: 'Noto Naskh Arabic, system-ui, sans-serif',
     isRTL: true,
   },
-  {
-    lang: 'en',
-    path: join(projectRoot, '..', 'src', 'en', 'blog', 'domain-terminology-guide.md'),
+  fa: {
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@700&display=swap',
+    fontFamily: 'Noto Naskh Arabic, system-ui, sans-serif',
+    isRTL: true,
+  },
+  he: {
+    fontUrl: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@700&display=swap',
+    fontFamily: 'Noto Sans Hebrew, system-ui, sans-serif',
+    isRTL: true,
+  },
+  default: {
     fontUrl: 'https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap',
     fontFamily: 'Inter, Segoe UI, system-ui, sans-serif',
     isRTL: false,
-  },
-]
+  }
+}
 
-async function generateOGWithPuppeteer({ lang, path, fontUrl, fontFamily, isRTL }) {
-  const raw = readFileSync(path, 'utf-8')
-  const { data } = matter(raw)
-  const title = data.title || 'Untitled'
-  const outDir = join(outputDir, lang, 'blog')
+// 递归函数：遍历目录下的所有 .md 文件
+function getAllMarkdownFiles(dirPath, basePath = '') {
+  const files = []
+  let entries
+  try {
+    entries = readdirSync(dirPath, { withFileTypes: true })
+  } catch (e) {
+    return files
+  }
+  
+  for (const entry of entries) {
+    const fullPath = join(dirPath, entry.name)
+    const relativePath = basePath ? join(basePath, entry.name) : entry.name
+    
+    if (entry.isDirectory()) {
+      // 递归处理子目录
+      files.push(...getAllMarkdownFiles(fullPath, relativePath))
+    } else if (entry.isFile() && extname(entry.name) === '.md') {
+      files.push({
+        fullPath,
+        relativePath
+      })
+    }
+  }
+  return files
+}
+
+async function generateOGWithPuppeteer(title, lang, relativePathWithoutExt) {
+  const config = languageConfigs[lang] || languageConfigs.default
+  const { fontUrl, fontFamily, isRTL } = config
+  
+  const outDir = join(outputDir, lang, 'blog', dirname(relativePathWithoutExt))
   mkdirSync(outDir, { recursive: true })
-  const outBase = join(outDir, 'domain-terminology-guide')
+  const outBase = join(outDir, basename(relativePathWithoutExt))
 
   const html = `
     <html lang="${lang}">
@@ -106,12 +140,40 @@ async function generateOGWithPuppeteer({ lang, path, fontUrl, fontFamily, isRTL 
   await page.screenshot({ path: outBase + '.jpg', type: 'jpeg', quality: 66 })
 
   await browser.close()
-  console.log(`Generated: ${outBase}.png and .jpg (${lang})`)
+  console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png and .jpg (${title})`)
 }
 
+// 处理所有语言下 blog 目录的所有 .md 文件（包括子目录）
+const languages = ['en', 'zh', 'ar', 'de', 'es', 'fr', 'hi', 'fa']
+
 async function main() {
-  for (const file of files) {
-    await generateOGWithPuppeteer(file)
+  for (const lang of languages) {
+    const blogDir = join(projectRoot, '..', 'src', lang, 'blog')
+    let markdownFiles
+    try {
+      markdownFiles = getAllMarkdownFiles(blogDir)
+    } catch (e) {
+      console.warn(`No blog dir for language: ${lang}`)
+      continue
+    }
+    
+    console.log(`Found ${markdownFiles.length} markdown files in ${lang}/blog/`)
+    
+    for (const fileInfo of markdownFiles) {
+      const raw = readFileSync(fileInfo.fullPath, 'utf-8')
+      const { data } = matter(raw)
+      const title = data.title || 'Untitled'
+      
+      // 获取相对路径（不包含文件扩展名）用于输出路径
+      const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
+      
+      try {
+        await generateOGWithPuppeteer(title, lang, relativePathWithoutExt)
+      } catch (e) {
+        console.error(`❌ Failed: ${lang}/blog/${relativePathWithoutExt}.png/.jpg (${title})`)
+        console.error(`   Reason: ${e.message}`)
+      }
+    }
   }
   console.log('🎉 Puppeteer OG images generated!')
 }
