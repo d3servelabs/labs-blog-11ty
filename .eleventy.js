@@ -6,6 +6,28 @@ export default async function (eleventyConfig) {
     errorMode: 'allow-fallback' // Opting out of "strict"
   });
 
+  eleventyConfig.addCollection('blog_en', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/en/blog/**/*.md');
+  });
+  eleventyConfig.addCollection('blog_ar', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/ar/blog/**/*.md');
+  });
+  eleventyConfig.addCollection('blog_de', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/de/blog/**/*.md');
+  });
+  eleventyConfig.addCollection('blog_es', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/es/blog/**/*.md');
+  });
+  eleventyConfig.addCollection('blog_fr', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/fr/blog/**/*.md');
+  });
+  eleventyConfig.addCollection('blog_hi', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/hi/blog/**/*.md');
+  });
+  eleventyConfig.addCollection('blog_zh', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/zh/blog/**/*.md');
+  });
+
   // Copy individual files that should be in the output
   eleventyConfig.addPassthroughCopy('src/favicon.ico');
   eleventyConfig.addPassthroughCopy('src/opengraph.jpg');
