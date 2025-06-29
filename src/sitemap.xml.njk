@@ -1,0 +1,24 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+layout: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for post in collections.all %}
+  {%- if post.data.permalink != '/sitemap.xml' and post.url and not post.data.draft %}
+  <url>
+    <loc>{{ meta.url }}/b{{ post.url }}</loc>
+    {%- if post.data.date %}
+    {%- set postDate = post.data.date %}
+    {%- if postDate.toISOString %}
+    <lastmod>{{ postDate.toISOString().split('T')[0] }}</lastmod>
+    {%- elif postDate %}
+    <lastmod>{{ postDate }}</lastmod>
+    {%- endif %}
+    {%- endif %}
+    <priority>{% if post.data.featured %}1.0{% elif '/blog/' in post.url %}0.8{% else %}0.6{% endif %}</priority>
+  </url>
+  {%- endif %}
+{%- endfor %}
+</urlset> 
