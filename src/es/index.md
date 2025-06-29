@@ -12,6 +12,6 @@ Puedes leer el [artículo en mi sitio web personal](https://www.lenesaile.com/es
 <h2>Artículos del blog</h2>
 <ul>
   {%- for post in collections.blog_es | reverse -%}
-    <li><a href="{{ post.url }}">{{ post.data.title }}</a></li>
+    <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
   {%- endfor -%}
 </ul>

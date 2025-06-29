@@ -12,6 +12,6 @@ In einem [Artikel auf meiner Website](https://www.lenesaile.com/de/blog/internat
 <h2>Blogbeiträge</h2>
 <ul>
   {%- for post in collections.blog_de | reverse -%}
-    <li><a href="{{ post.url }}">{{ post.data.title }}</a></li>
+    <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
   {%- endfor -%}
 </ul>
