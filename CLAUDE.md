@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an Eleventy-based internationalized blog website supporting multiple languages (English, German, Spanish, and Farsi). The project uses Eleventy's I18n plugin for internationalization and is deployed to Netlify with language-based redirects.
+This is an Eleventy-based internationalized blog website supporting multiple languages. The project uses Eleventy's I18n plugin for internationalization and is deployed to Netlify with language-based redirects.
 
 ## Development Commands
 
@@ -23,7 +23,7 @@ Builds the site to the `dist/` directory.
 ## Architecture
 
 ### Internationalization Structure
-- **Language Support**: English (en), German (de), Spanish (es), Farsi (fa)
+- **Language Support**: English (en), German (de), Spanish (es), Chinese (zh), Arabic (ar), French (fr), Hindi (hi)
 - **Default Language**: English with fallback behavior enabled
 - **Language Detection**: Netlify handles browser language detection and redirects via `netlify.toml`
 - **Content Structure**: Each language has its own directory in `src/` (e.g., `src/en/`, `src/de/`)
@@ -44,7 +44,7 @@ Builds the site to the `dist/` directory.
 ### Template System
 - **Base Template**: Uses Nunjucks with `base.njk` as the main layout
 - **Inline Styles**: The base template includes Bahunya CSS framework styles inline for performance
-- **Language Direction**: Supports both LTR and RTL languages (Farsi uses RTL)
+- **Language Direction**: Supports both LTR and RTL languages (Arabic uses RTL)
 - **SEO**: Includes proper hreflang tags, canonical URLs, and Open Graph metadata
 
 ### Deployment

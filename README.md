@@ -1,8 +1,7 @@
-# eleventy-i18n
+# Namefi Blog based on Eleventy I18n
 
-Minimal starter for localized content, using Eleventy's own Internationalization (I18n) plugin.
-
-In an article on my personal website, I describe the structure of the starter and the decisions behind it: https://www.lenesaile.com/en/blog/internationalization-with-eleventy-20-and-netlify/
+This blog is based on https://www.11ty.dev/ and its I18n template
+https://eleventy-i18n.netlify.app/en/
 
 ## Preview
 
