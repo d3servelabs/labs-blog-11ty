@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/(en|de|es|fr|hi|ar|fa|zh)/blog/:slug*",
+      "destination": "/b/$1/blog/:slug*"
+    },
+    {
+      "source": "/(en|de|es|fr|hi|ar|fa|zh)/:slug*",
+      "destination": "/b/$1/:slug*"
+    }
+  ]
+} 
