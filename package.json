@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "eleventy --serve --watch",
-    "build": "eleventy"
+    "build": "node scripts/prebuild-og-images.mjs && eleventy"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",

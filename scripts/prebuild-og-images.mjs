@@ -10,7 +10,7 @@ import { ImageResponse } from '@vercel/og'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const projectRoot = join(__dirname, '..')
-const outputDir = join(projectRoot, 'public', 'og')
+const outputDir = join(projectRoot, 'dist', 'og')
 
 // 读取 Namefi.png 并转为 base64 DataURL
 const logoPath = join(projectRoot, 'Namefi.png')
