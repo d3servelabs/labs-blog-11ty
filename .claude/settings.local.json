@@ -13,7 +13,12 @@
       "Bash(do mv \"src/$lang/blog/glossary\" \"src/$lang/glossary\")",
       "Bash(mv:*)",
       "Bash(npm run gen:og:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install)",
+      "Bash(node scripts/translate.mjs:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run translate:*)"
     ],
     "deny": []
   }
