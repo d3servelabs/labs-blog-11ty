@@ -51,6 +51,6 @@ export default async function (eleventyConfig) {
     },
     markdownTemplateEngine: 'njk',
     htmlTemplateEngine: 'njk',
-    pathPrefix: '/b/'
+    pathPrefix: '/r/'
   };
 }
