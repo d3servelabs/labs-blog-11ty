@@ -6,6 +6,7 @@ export default async function (eleventyConfig) {
     errorMode: 'allow-fallback' // Opting out of "strict"
   });
 
+  // Blog collections (excluding moved directories)
   eleventyConfig.addCollection('blog_en', function(collectionApi) {
     return collectionApi.getFilteredByGlob('src/en/blog/**/*.md');
   });
@@ -26,6 +27,75 @@ export default async function (eleventyConfig) {
   });
   eleventyConfig.addCollection('blog_zh', function(collectionApi) {
     return collectionApi.getFilteredByGlob('src/zh/blog/**/*.md');
+  });
+
+  // TLD collections
+  eleventyConfig.addCollection('tld_en', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/en/tld/**/*.md');
+  });
+  eleventyConfig.addCollection('tld_ar', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/ar/tld/**/*.md');
+  });
+  eleventyConfig.addCollection('tld_de', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/de/tld/**/*.md');
+  });
+  eleventyConfig.addCollection('tld_es', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/es/tld/**/*.md');
+  });
+  eleventyConfig.addCollection('tld_fr', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/fr/tld/**/*.md');
+  });
+  eleventyConfig.addCollection('tld_hi', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/hi/tld/**/*.md');
+  });
+  eleventyConfig.addCollection('tld_zh', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/zh/tld/**/*.md');
+  });
+
+  // Glossary collections
+  eleventyConfig.addCollection('glossary_en', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/en/glossary/**/*.md');
+  });
+  eleventyConfig.addCollection('glossary_ar', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/ar/glossary/**/*.md');
+  });
+  eleventyConfig.addCollection('glossary_de', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/de/glossary/**/*.md');
+  });
+  eleventyConfig.addCollection('glossary_es', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/es/glossary/**/*.md');
+  });
+  eleventyConfig.addCollection('glossary_fr', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/fr/glossary/**/*.md');
+  });
+  eleventyConfig.addCollection('glossary_hi', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/hi/glossary/**/*.md');
+  });
+  eleventyConfig.addCollection('glossary_zh', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/zh/glossary/**/*.md');
+  });
+
+  // Partners collections
+  eleventyConfig.addCollection('partners_en', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/en/partners/**/*.md');
+  });
+  eleventyConfig.addCollection('partners_ar', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/ar/partners/**/*.md');
+  });
+  eleventyConfig.addCollection('partners_de', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/de/partners/**/*.md');
+  });
+  eleventyConfig.addCollection('partners_es', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/es/partners/**/*.md');
+  });
+  eleventyConfig.addCollection('partners_fr', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/fr/partners/**/*.md');
+  });
+  eleventyConfig.addCollection('partners_hi', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/hi/partners/**/*.md');
+  });
+  eleventyConfig.addCollection('partners_zh', function(collectionApi) {
+    return collectionApi.getFilteredByGlob('src/zh/partners/**/*.md');
   });
 
   // Copy individual files that should be in the output

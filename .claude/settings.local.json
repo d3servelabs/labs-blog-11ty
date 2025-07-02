@@ -6,7 +6,14 @@
       "Bash(find:*)",
       "Bash(ls:*)",
       "Bash(rg:*)",
-      "Bash(gt:*)"
+      "Bash(gt:*)",
+      "Bash(for lang in en ar de es fr hi zh)",
+      "Bash(do mv \"src/$lang/blog/tld\" \"src/$lang/tld\")",
+      "Bash(done)",
+      "Bash(do mv \"src/$lang/blog/glossary\" \"src/$lang/glossary\")",
+      "Bash(mv:*)",
+      "Bash(npm run gen:og:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
