@@ -94,3 +94,10 @@ The site organizes content into four main types, each with its own directory str
 - Images generated in both PNG and JPG formats with paths matching content structure
 - Concurrent processing with configurable limits for performance
 - Universal path generation via `src/_data/ogImage.js` works for all content types
+
+## Brand Guidelines
+
+### Brand Name
+- **Namefi**: Always spelled as "Namefi" (not "NameFi" or other variations)
+- This is the correct branding for the domain tokenization platform
+- All content, translations, and documentation must maintain this exact spelling

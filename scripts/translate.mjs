@@ -58,25 +58,27 @@ class GeminiTranslationService {
         const sourceLangName = LANGUAGE_NAMES[sourceLang] || sourceLang;
         const targetLangName = LANGUAGE_NAMES[targetLang] || targetLang;
 
-        const prompt = `You are a professional translator specializing in Web3, blockchain, and domain technology content.
+        const prompt = `Please translate the following technical content from ${sourceLangName} into ${targetLangName}, with the goal of producing a natural, fluent, and high-quality technical blog post.
 
-Translate the following ${sourceLangName} text to ${targetLangName}:
+Requirements:
 
-IMPORTANT GUIDELINES:
-1. Maintain technical accuracy for Web3/blockchain terms
-2. Preserve markdown formatting if present
-3. Keep code blocks, URLs, and technical identifiers unchanged
-4. Use appropriate terminology for the domain industry
-5. Ensure natural, fluent translation in the target language
-6. For brand names like "NameFi", keep them unchanged
-7. Preserve any HTML tags or special formatting
+• Preserve the original meaning, but feel free to restructure for better flow in ${targetLangName}.
+• Use the natural tone and style of technical blog posts in ${targetLangName}—avoid overly literal or robotic translation.
+• Keep the tone clear, confident, and easy to read for developers.
+• Avoid repetitive phrasing or generic AI-style introductions like "This article will show you…" unless it fits the local convention.
+• Do not translate terms that are better left in English (e.g., function names, code keywords, common tech acronyms).
+• Preserve all markdown formatting, HTML tags, and structure exactly.
+• Keep code blocks, URLs, domain names, and file extensions unchanged.
+• Brand names (Namefi, Ethereum, etc.) should remain unchanged.
+• Translate keywords, tags, and topic sections to ${targetLangName} where appropriate for SEO and discoverability.
 
-Text to translate:
-"""
+【Content starts】
+
 ${text}
-"""
 
-Provide ONLY the translated text, no explanations or additional content.`;
+【Content ends】
+
+Response format: Provide ONLY the translated text with preserved formatting.`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -124,25 +126,26 @@ Provide ONLY the translated text, no explanations or additional content.`;
 
         const contextInfo = contextPrompts[contentType] || "This is Web3/blockchain related content.";
 
-        const prompt = `You are a professional translator specializing in Web3, blockchain, and domain technology.
+        const prompt = `Please translate the following technical content from ${sourceLangName} into ${targetLangName}, with the goal of producing a natural, fluent, and high-quality technical blog post.
 
-${contextInfo}
+Requirements:
 
-Translate the following ${sourceLangName} text to ${targetLangName}:
+• Preserve the original meaning, but feel free to restructure for better flow in ${targetLangName}.
+• Use the natural tone and style of technical blog posts in ${targetLangName}—avoid overly literal or robotic translation.
+• Keep the tone clear, confident, and easy to read for developers.
+• Avoid repetitive phrasing or generic AI-style introductions like "This article will show you…" unless it fits the local convention.
+• Do not translate terms that are better left in English (e.g., function names, code keywords, common tech acronyms).
+• Preserve all markdown formatting, HTML tags, and structure exactly.
+• Keep code blocks, URLs, domain names, and file extensions unchanged.
+• Brand names (Namefi, Ethereum, etc.) should remain unchanged.
+• Translate keywords, tags, and topic sections to ${targetLangName} where appropriate for SEO and discoverability.
+• ${contextInfo}
 
-CRITICAL REQUIREMENTS:
-1. Maintain technical accuracy for all Web3/blockchain/domain terms
-2. Preserve all markdown formatting, HTML tags, and structure
-3. Keep code blocks, URLs, domain names, and file extensions unchanged
-4. Use industry-standard terminology for the target language
-5. Brand names (NameFi, Ethereum, etc.) should remain unchanged
-6. Ensure natural, professional tone appropriate for ${targetLangName}
-7. For technical acronyms (DNS, ENS, NFT, etc.), keep the acronym but may explain if helpful
+【Content starts】
 
-Text to translate:
-"""
 ${text}
-"""
+
+【Content ends】
 
 Response format: Provide ONLY the translated text with preserved formatting.`;
 
