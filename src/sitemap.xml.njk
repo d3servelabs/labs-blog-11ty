@@ -8,7 +8,7 @@ layout: false
 {%- for post in collections.all %}
   {%- if post.data.permalink != '/sitemap.xml' and post.url and not post.data.draft %}
   <url>
-    <loc>{{ meta.url }}/b{{ post.url }}</loc>
+    <loc>{{ meta.url }}/r{{ post.url }}</loc>
     {%- if post.data.date %}
     {%- set postDate = post.data.date %}
     {%- if postDate.toISOString %}

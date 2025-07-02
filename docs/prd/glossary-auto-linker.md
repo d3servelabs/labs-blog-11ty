@@ -28,7 +28,7 @@
 
 **链接格式要求：**
 - 统一使用 `[term]({{ '/en/blog/glossary/term/' | url }})` 格式
-- 确保baseURL="/b"配置正确应用
+- 确保baseURL="/r"配置正确应用
 - 保持原文的markdown结构
 
 **链接策略：**
@@ -242,7 +242,7 @@ npm run glossary:link -- --help
 
 ### 链接格式验证
 所有链接均使用格式：`[term]({{ '/en/blog/glossary/term/' | url }})`
-确保与Eleventy配置的baseURL="/b"兼容。
+确保与Eleventy配置的baseURL="/r"兼容。
 
 ---
 

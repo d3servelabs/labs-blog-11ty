@@ -12,7 +12,7 @@ This is an Eleventy-based internationalized blog website supporting multiple lan
 ```bash
 npm start
 ```
-Starts development server on `http://localhost:8080` with live reload. Note: Redirects only work on the server, so manually navigate to language-specific URLs like `http://localhost:8080/en/`. Uses `--pathprefix=/b/` for correct asset paths.
+Starts development server on `http://localhost:8080` with live reload. Note: Redirects only work on the server, so manually navigate to language-specific URLs like `http://localhost:8080/en/`. Uses `--pathprefix=/r/` for correct asset paths.
 
 ### Build for production
 ```bash
@@ -35,7 +35,7 @@ Generates Open Graph images for all blog posts using Puppeteer. Creates PNG and 
 - **Content Structure**: Each language has its own directory in `src/` (e.g., `src/en/`, `src/de/`)
 
 ### Key Files and Directories
-- `.eleventy.js`: Main Eleventy configuration with I18n plugin setup and path prefix `/b/`
+- `.eleventy.js`: Main Eleventy configuration with I18n plugin setup and path prefix `/r/`
 - `src/_data/`: Global data files including language strings, navigation, and metadata
 - `src/_includes/`: Nunjucks templates (base.njk, header.njk, footer.njk)
 - `src/{lang}/`: Language-specific content directories
