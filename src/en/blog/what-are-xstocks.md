@@ -1,5 +1,5 @@
 ---
-title: What are xStocks? Why Domainers should care?
+title: What are xStocks? Why should domainers care?
 date: '2025-07-02'
 language: en
 tags: ['faq', 'domains', 'tokenization']
