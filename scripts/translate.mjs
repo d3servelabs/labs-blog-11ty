@@ -12,10 +12,22 @@ import { glob } from 'glob';
 import pLimit from 'p-limit';
 import cliProgress from 'cli-progress';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import {
+  initializeCache,
+  shouldRegenerate,
+  updateCacheEntry,
+  getDependenciesHash,
+  cleanCache,
+  displayCacheStats,
+  cleanStaleEntries
+} from './cache-utils.mjs';
 
 // Configuration
 const SUPPORTED_LANGUAGES = ['en', 'de', 'es', 'zh', 'ar', 'fr', 'hi'];
 const CONTENT_TYPES = ['blog', 'tld', 'glossary', 'partners'];
+
+// Script version for cache invalidation
+const SCRIPT_VERSION = '2.0.0';
 
 // Language names for Gemini prompts
 const LANGUAGE_NAMES = {
@@ -185,8 +197,22 @@ class FileProcessor {
     return 'general';
   }
 
-  async translateFile(filePath, targetLang, sourceLang = 'en') {
+  async translateFile(filePath, targetLang, sourceLang = 'en', noCache = false) {
     try {
+      const startTime = Date.now();
+      
+      // Generate current translation prompt hash for cache comparison
+      const promptHash = this.getTranslationPromptHash(sourceLang, targetLang);
+      const dependenciesHash = getDependenciesHash([], `${SCRIPT_VERSION}-${promptHash}`);
+      
+      // Check if translation is needed
+      if (!noCache && !shouldRegenerate(filePath, 'translations', dependenciesHash)) {
+        const targetFilePath = this.generateTargetPath(filePath, targetLang, sourceLang);
+        const elapsed = Date.now() - startTime;
+        console.log(`⏭️  Skipping: ${path.basename(filePath)} -> ${targetLang} (unchanged) [${elapsed}ms]`);
+        return { success: true, filePath: targetFilePath, skipped: true, elapsed };
+      }
+      
       const content = await fs.readFile(filePath, 'utf8');
       const { data: frontMatter, content: markdownBody } = matter(content);
       const contentType = this.getContentType(filePath);
@@ -242,11 +268,41 @@ class FileProcessor {
 
       // Write translated file
       await fs.writeFile(targetFilePath, newContent, 'utf8');
-
-      return { success: true, filePath: targetFilePath };
+      
+      // Update cache
+      updateCacheEntry(filePath, 'translations', [targetFilePath], dependenciesHash);
+      
+      const elapsed = Date.now() - startTime;
+      console.log(`✅ Translated: ${path.basename(filePath)} -> ${targetLang} [${elapsed}ms]`);
+      return { success: true, filePath: targetFilePath, elapsed };
     } catch (error) {
-      return { success: false, filePath, error: error.message };
+      const elapsed = Date.now() - startTime;
+      return { success: false, filePath, error: error.message, elapsed };
     }
+  }
+  
+  /**
+   * Generate hash for translation prompts to detect prompt changes
+   * @param {string} sourceLang - Source language
+   * @param {string} targetLang - Target language
+   * @returns {string} Hash of translation prompts
+   */
+  getTranslationPromptHash(sourceLang, targetLang) {
+    // Include key parts of the translation prompt that affect output
+    const promptKey = `${sourceLang}-${targetLang}-v2.0`;
+    const promptContent = `
+      Please translate the following technical content from ${sourceLang} into ${targetLang}
+      Preserve the original meaning, but feel free to restructure for better flow
+      Use the natural tone and style of technical blog posts
+      Keep the tone clear, confident, and easy to read for developers
+      Avoid repetitive phrasing or generic AI-style introductions
+      Do not translate terms that are better left in English
+      Preserve all markdown formatting, HTML tags, and structure exactly
+      Keep code blocks, URLs, domain names, and file extensions unchanged
+      Brand names (Namefi, Ethereum, etc.) should remain unchanged
+      Translate keywords, tags, and topic sections where appropriate
+    `;
+    return getDependenciesHash([], promptKey + promptContent);
   }
 
   generateTargetPath(sourcePath, targetLang, sourceLang) {
@@ -279,9 +335,28 @@ program
   .option('--dry-run', 'Preview what would be translated without making changes')
   .option('--backup', 'Create backup files before overwriting')
   .option('--content-type <types>', 'Content types to translate (comma-separated): blog,tld,glossary,partners')
-  .option('--force', 'Overwrite existing translated files')
+  .option('--no-cache', 'Bypass cache and regenerate all files')
+  .option('--clean-cache', 'Clean the translation cache and exit')
+  .option('--cache-stats', 'Display cache statistics and exit')
   .action(async (options) => {
     console.log('🌍 Batch Translation Tool (Gemini 2.5 Pro) Starting...\n');
+
+    // Initialize cache system
+    initializeCache();
+    
+    // Handle cache management commands
+    if (options.cleanCache) {
+      cleanCache();
+      return;
+    }
+    
+    if (options.cacheStats) {
+      displayCacheStats();
+      return;
+    }
+    
+    // Clean stale entries
+    cleanStaleEntries();
 
     // Initialize Gemini
     initializeGemini();
@@ -298,7 +373,8 @@ program
     const translationService = new GeminiTranslationService();
     const fileProcessor = new FileProcessor(translationService, {
       dryRun: options.dryRun,
-      backup: options.backup
+      backup: options.backup,
+      noCache: options.noCache
     });
 
     // Parse target languages
@@ -361,7 +437,10 @@ program
     progressBar.start(totalTranslations, 0, { filename: '' });
 
     let completed = 0;
+    let skipped = 0;
     let errors = [];
+    let totalTime = 0;
+    const scriptStartTime = Date.now();
 
     // Process translations
     for (const sourceFile of sourceFiles) {
@@ -375,15 +454,21 @@ program
           const targetPath = fileProcessor.generateTargetPath(sourceFile, targetLang, options.from);
           const targetExists = await fileProcessor.fileExists(targetPath);
           
-          if (targetExists && !options.force) {
+          if (targetExists && !options.noCache) {
             console.log(`\n⚠️  Skipping ${targetPath} (already exists)`);
             completed++;
             continue;
           }
 
-          const result = await fileProcessor.translateFile(sourceFile, targetLang, options.from);
+          const result = await fileProcessor.translateFile(sourceFile, targetLang, options.from, options.noCache);
           
           if (result.success) {
+            if (result.skipped) {
+              skipped++;
+            }
+            if (result.elapsed) {
+              totalTime += result.elapsed;
+            }
             completed++;
           } else {
             errors.push({
@@ -407,9 +492,18 @@ program
 
     progressBar.stop();
 
+    const scriptEndTime = Date.now();
+    const totalScriptTime = scriptEndTime - scriptStartTime;
+    
     // Results summary
     console.log('\n✅ Translation completed!');
-    console.log(`📊 Processed: ${completed}/${totalTranslations} translations`);
+    console.log(`📊 Translation Summary:`);
+    console.log(`   Total: ${totalTranslations} translations`);
+    console.log(`   Processed: ${completed - skipped}`);
+    console.log(`   Skipped: ${skipped}`);
+    console.log(`   Completed: ${completed}`);
+    console.log(`⏱️  Processing time: ${totalTime}ms`);
+    console.log(`⏱️  Total script time: ${totalScriptTime}ms`);
     
     if (errors.length > 0) {
       console.log(`\n❌ Errors encountered: ${errors.length}`);

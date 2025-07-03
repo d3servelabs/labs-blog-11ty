@@ -26,6 +26,22 @@ npm run gen:og
 ```
 Generates Open Graph images for all blog posts using Puppeteer. Creates PNG and JPG versions in the `public/og/` directory with language-specific font support and RTL layout for Arabic/Hebrew languages.
 
+#### OG Image Cache Options
+- `--no-cache`: Bypass cache and regenerate all images
+- `--clean-cache`: Clean the cache and exit
+- `--cache-stats`: Display cache statistics and exit
+
+### Batch Translation
+```bash
+npm run translate
+```
+Translates content between languages using Gemini 2.5 Pro. Supports all content types (blog, tld, glossary, partners) with intelligent caching.
+
+#### Translation Cache Options
+- `--no-cache`: Bypass cache and regenerate all translations
+- `--clean-cache`: Clean the translation cache and exit  
+- `--cache-stats`: Display cache statistics and exit
+
 ## Architecture
 
 ### Internationalization Structure
@@ -42,7 +58,26 @@ Generates Open Graph images for all blog posts using Puppeteer. Creates PNG and 
 - `src/{lang}/{lang}.11tydata.js`: Language-specific data files that set the `lang` property
 - `src/_data/ogImage.js`: Universal OG image configuration for all content types
 - `scripts/prebuild-og-images.mjs`: Puppeteer script for generating multilingual OG images
+- `scripts/translate.mjs`: Batch translation script using Gemini 2.5 Pro
+- `scripts/cache-utils.mjs`: Cache utilities for intelligent file change detection
+- `.cache/generation-cache.yaml`: YAML-based cache storage for tracking file changes
 - `public/`: Static assets directory that gets copied to output root
+
+### Intelligent Caching System
+The project uses a Git-based caching system to avoid unnecessary regeneration of OG images and translations:
+
+#### Cache Features
+- **Git Hash Tracking**: Uses `git hash-object` to detect file content changes with high precision
+- **Dependency Tracking**: Monitors logo files, translation prompts, and script versions for cache invalidation
+- **YAML Storage**: Human-readable cache file in `.cache/generation-cache.yaml`
+- **Performance Metrics**: Built-in timing for individual files and total processing time
+- **Cache Management**: Commands to view stats, clean cache, or bypass cache entirely
+
+#### Cache Behavior
+- **OG Images**: Regenerated only when source markdown content, logo files, or script version changes
+- **Translations**: Regenerated when source content, translation prompts, or Gemini model version changes
+- **Fallback**: Automatically falls back to content hashing if Git is unavailable
+- **Stale Cleanup**: Automatically removes cache entries for deleted files
 
 ### Data Architecture
 - **Language Data**: `src/_data/languages.js` contains localized strings and RTL direction settings

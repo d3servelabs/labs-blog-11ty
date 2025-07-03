@@ -4,12 +4,25 @@ import puppeteer from 'puppeteer'
 import { readFileSync, mkdirSync, writeFileSync, readdirSync } from 'fs'
 import { join, dirname, basename, extname } from 'path'
 import matter from 'gray-matter'
+import { Command } from 'commander'
+import {
+  initializeCache,
+  shouldRegenerate,
+  updateCacheEntry,
+  getDependenciesHash,
+  cleanCache,
+  displayCacheStats,
+  cleanStaleEntries
+} from './cache-utils.mjs'
 
 const projectRoot = dirname(new URL(import.meta.url).pathname)
 const outputDir = join(projectRoot, '..', 'public', 'og')
 const logoPath = join(projectRoot, '..', 'Namefi.png')
 const logoBase64 = readFileSync(logoPath).toString('base64')
 const logoDataUrl = `data:image/png;base64,${logoBase64}`
+
+// Script version for cache invalidation
+const SCRIPT_VERSION = '2.0.0'
 
 // Concurrency limit - adjust based on your system's capability
 const CONCURRENCY_LIMIT = 50
@@ -65,7 +78,7 @@ function getAllMarkdownFiles(dirPath, basePath = '') {
   return files
 }
 
-async function generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt) {
+async function generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt, sourceFilePath) {
   const config = languageConfigs[lang] || languageConfigs.default
   const { fontUrl, fontFamily, isRTL } = config
   
@@ -142,7 +155,15 @@ async function generateOGWithPuppeteer(browser, title, lang, relativePathWithout
     // JPG
     await page.screenshot({ path: outBase + '.jpg', type: 'jpeg', quality: 66 })
 
-    console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png and .jpg (${title})`)
+    // Update cache
+    const outputs = [outBase + '.png', outBase + '.jpg']
+    const dependenciesHash = getDependenciesHash([logoPath], SCRIPT_VERSION)
+    updateCacheEntry(sourceFilePath, 'ogImages', outputs, dependenciesHash)
+    
+    const elapsed = Date.now() - startTime
+    console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png and .jpg (${title}) [${elapsed}ms]`)
+    
+    return { outputs, elapsed }
   } finally {
     await page.close()
   }
@@ -173,7 +194,25 @@ async function processConcurrently(tasks, concurrencyLimit) {
 // 处理所有语言下 blog 目录的所有 .md 文件（包括子目录）
 const languages = ['en', 'zh', 'ar', 'de', 'es', 'fr', 'hi', 'fa']
 
-async function main() {
+async function main(options = {}) {
+  const scriptStartTime = Date.now()
+  
+  // Initialize cache system
+  initializeCache()
+  
+  // Handle cache management commands
+  if (options.cleanCache) {
+    cleanCache()
+    return
+  }
+  
+  if (options.cacheStats) {
+    displayCacheStats()
+    return
+  }
+  
+  // Clean stale entries
+  cleanStaleEntries()
   console.log('🚀 Starting Puppeteer browser...')
   const browser = await puppeteer.launch({ 
     headless: 'new', 
@@ -184,6 +223,11 @@ async function main() {
     // Collect all tasks first
     const allTasks = []
     let totalFiles = 0
+    let skippedFiles = 0
+    let totalProcessingTime = 0
+    
+    // Calculate dependencies hash once
+    const dependenciesHash = getDependenciesHash([logoPath], SCRIPT_VERSION)
 
     for (const lang of languages) {
       const blogDir = join(projectRoot, '..', 'src', lang, 'blog')
@@ -204,10 +248,17 @@ async function main() {
         const title = data.title || 'Untitled'
         const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
         
+        // Check if generation is needed
+        if (!options.noCache && !shouldRegenerate(fileInfo.fullPath, 'ogImages', dependenciesHash)) {
+          console.log(`⏭️  Skipping: ${lang}/blog/${relativePathWithoutExt} (unchanged)`)
+          skippedFiles++
+          continue
+        }
+        
         // Create a task function for this file
         allTasks.push(async () => {
           try {
-            await generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt)
+            await generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt, fileInfo.fullPath)
           } catch (e) {
             console.error(`❌ Failed: ${lang}/blog/${relativePathWithoutExt}.png/.jpg (${title})`)
             console.error(`   Reason: ${e.message}`)
@@ -216,10 +267,25 @@ async function main() {
       }
     }
 
-    console.log(`🔄 Processing ${totalFiles} files with concurrency limit of ${CONCURRENCY_LIMIT}...`)
+    if (allTasks.length === 0) {
+      console.log(`🎉 All files up to date! (${skippedFiles} files skipped)`)
+      return
+    }
+    
+    console.log(`🔄 Processing ${allTasks.length}/${totalFiles} files (${skippedFiles} skipped) with concurrency limit of ${CONCURRENCY_LIMIT}...`)
     
     // Process all tasks concurrently with limit
     await processConcurrently(allTasks, CONCURRENCY_LIMIT)
+    
+    const scriptEndTime = Date.now()
+    const totalScriptTime = scriptEndTime - scriptStartTime
+    
+    console.log(`\n📊 Generation Summary:`)
+    console.log(`   Files processed: ${allTasks.length}`)
+    console.log(`   Files skipped: ${skippedFiles}`)
+    console.log(`   Total files: ${totalFiles}`)
+    console.log(`⏱️  Processing time: ${totalProcessingTime}ms`)
+    console.log(`⏱️  Total script time: ${totalScriptTime}ms`)
 
   } finally {
     console.log('🔒 Closing browser...')
@@ -229,4 +295,21 @@ async function main() {
   console.log('🎉 Puppeteer OG images generated!')
 }
 
-main() 
+// Command line interface
+const program = new Command()
+
+program
+  .name('prebuild-og-images')
+  .description('Generate Open Graph images for blog posts with intelligent caching')
+  .version('2.0.0')
+  .option('--no-cache', 'Bypass cache and regenerate all images')
+  .option('--clean-cache', 'Clean the cache and exit')
+  .option('--cache-stats', 'Display cache statistics and exit')
+  .action(async (options) => {
+    await main(options)
+  })
+
+// If called directly (not imported), run the CLI
+if (import.meta.url === `file://${process.argv[1]}`) {
+  program.parse(process.argv)
+} 
