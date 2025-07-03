@@ -25,7 +25,8 @@
       "Bash(npm run build:*)",
       "Bash(grep:*)",
       "Bash(/dev/null)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(node:*)"
     ],
     "deny": []
   }
