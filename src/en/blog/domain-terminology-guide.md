@@ -6,6 +6,7 @@ tags: ['faq', 'domains']
 authors: ['namefiteam']
 draft: false
 description: Master domain investing with our comprehensive guide to essential domain terminology. From basic concepts to advanced trading strategies, learn the language of domain professionals.
+keywords: ['domain terminology', 'domain investing', 'domain names', 'domain trading', 'domain glossary', 'TLD', 'registrar', 'domain auction', 'domain portfolio', 'domain valuation', 'premium domains', 'domain flipping']
 ---
 
 # **Complete Domain Name Terminology Guide**

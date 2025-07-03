@@ -27,18 +27,31 @@ npm run gen:og
 Generates Open Graph images for all blog posts using Puppeteer. Creates PNG and JPG versions in the `public/og/` directory with language-specific font support and RTL layout for Arabic/Hebrew languages.
 
 #### OG Image Cache Options
-- `--no-cache`: Bypass cache and regenerate all images
+- `--skip-cache`: Bypass cache and regenerate all images
 - `--clean-cache`: Clean the cache and exit
 - `--cache-stats`: Display cache statistics and exit
 
+### YAML Linting and Standardization
+```bash
+npm run lint:yaml
+```
+Lints and fixes YAML frontmatter in Markdown files to ensure consistent format across all content. Enforces standard schema with required fields and validates data types.
+
+#### YAML Linter Options
+- `--fix`: Automatically fix issues where possible
+- `--dry-run`: Show what would be fixed without making changes
+- `--verbose`: Show warnings in addition to errors
+- `--content-type <types>`: Specific content types to check (blog,tld,glossary,partners)
+- `--files <patterns>`: Specific file patterns to check
+
 ### Batch Translation
 ```bash
-npm run translate
+npm run gen:i18n
 ```
-Translates content between languages using Gemini 2.5 Pro. Supports all content types (blog, tld, glossary, partners) with intelligent caching.
+Translates content between languages using Gemini 2.5 Pro. Supports all content types (blog, tld, glossary, partners) with intelligent caching, URL localization, and specialized keywords translation.
 
 #### Translation Cache Options
-- `--no-cache`: Bypass cache and regenerate all translations
+- `--skip-cache`: Bypass cache and regenerate all translations
 - `--clean-cache`: Clean the translation cache and exit  
 - `--cache-stats`: Display cache statistics and exit
 
@@ -58,10 +71,11 @@ Translates content between languages using Gemini 2.5 Pro. Supports all content 
 - `src/{lang}/{lang}.11tydata.js`: Language-specific data files that set the `lang` property
 - `src/_data/ogImage.js`: Universal OG image configuration for all content types
 - `scripts/prebuild-og-images.mjs`: Puppeteer script for generating multilingual OG images
-- `scripts/translate.mjs`: Batch translation script using Gemini 2.5 Pro
+- `scripts/translate.mjs`: Multi-service batch translation script with intelligent term consistency and URL localization
 - `scripts/cache-utils.mjs`: Cache utilities for intelligent file change detection
 - `.cache/generation-cache.yaml`: YAML-based cache storage for tracking file changes
 - `public/`: Static assets directory that gets copied to output root
+- `netlify.toml`: Deployment configuration with language fallback redirects
 
 ### Intelligent Caching System
 The project uses a Git-based caching system to avoid unnecessary regeneration of OG images and translations:
@@ -129,6 +143,27 @@ The site organizes content into four main types, each with its own directory str
 - Images generated in both PNG and JPG formats with paths matching content structure
 - Concurrent processing with configurable limits for performance
 - Universal path generation via `src/_data/ogImage.js` works for all content types
+
+### URL Localization
+The translation system automatically localizes URLs within content to maintain proper language-specific linking:
+
+#### Automatic URL Translation
+- Source URLs like `{{ '/en/blog/post/' | url }}` are automatically converted to `{{ '/zh/blog/post/' | url }}` when translating to Chinese
+- Supports all content types: blog, tld, glossary, partners
+- Preserves all URL formatting and Eleventy template syntax
+- Works with both single and double quote formats
+
+#### Fallback Redirect System
+- `netlify.toml` provides automatic fallback redirects for missing localized content
+- When `/zh/some-page/` doesn't exist, users are temporarily redirected (302) to `/en/some-page/`
+- Browser language detection automatically routes users to their preferred language
+- Each language has its own 404 error page with appropriate fallbacks
+
+#### Implementation Features
+- **URLLocalizer class**: Handles intelligent URL pattern detection and replacement
+- **Language-aware caching**: Cache invalidation includes URL localization versioning
+- **Multi-pattern support**: Handles various URL formats consistently across content types
+- **Performance optimized**: URL processing happens before translation to avoid redundant API calls
 
 ## Brand Guidelines
 

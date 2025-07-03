@@ -1,0 +1,130 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Language-specific fallback redirects
+# When a localized page doesn't exist, redirect to the default English version
+# Using 302 (temporary redirect) to indicate that localized versions may be added later
+
+[[redirects]]
+  from = "/r/ar/*"
+  to = "/r/en/:splat"
+  status = 302
+  conditions = {File = false}
+
+[[redirects]]
+  from = "/r/de/*"
+  to = "/r/en/:splat"
+  status = 302
+  conditions = {File = false}
+
+[[redirects]]
+  from = "/r/es/*"
+  to = "/r/en/:splat"
+  status = 302
+  conditions = {File = false}
+
+[[redirects]]
+  from = "/r/fr/*"
+  to = "/r/en/:splat"
+  status = 302
+  conditions = {File = false}
+
+[[redirects]]
+  from = "/r/hi/*"
+  to = "/r/en/:splat"
+  status = 302
+  conditions = {File = false}
+
+[[redirects]]
+  from = "/r/zh/*"
+  to = "/r/en/:splat"
+  status = 302
+  conditions = {File = false}
+
+# Browser language detection redirects
+# Redirect root path to user's preferred language based on Accept-Language header
+[[redirects]]
+  from = "/r/"
+  to = "/r/en/"
+  status = 302
+  conditions = {Language = ["en"]}
+
+[[redirects]]
+  from = "/r/"
+  to = "/r/de/"
+  status = 302
+  conditions = {Language = ["de"]}
+
+[[redirects]]
+  from = "/r/"
+  to = "/r/es/"
+  status = 302
+  conditions = {Language = ["es"]}
+
+[[redirects]]
+  from = "/r/"
+  to = "/r/fr/"
+  status = 302
+  conditions = {Language = ["fr"]}
+
+[[redirects]]
+  from = "/r/"
+  to = "/r/zh/"
+  status = 302
+  conditions = {Language = ["zh", "zh-CN", "zh-TW"]}
+
+[[redirects]]
+  from = "/r/"
+  to = "/r/ar/"
+  status = 302
+  conditions = {Language = ["ar"]}
+
+[[redirects]]
+  from = "/r/"
+  to = "/r/hi/"
+  status = 302
+  conditions = {Language = ["hi"]}
+
+# Default fallback to English
+[[redirects]]
+  from = "/r/"
+  to = "/r/en/"
+  status = 302
+
+# Global 404 handling per language
+# Each language has its own 404 page
+[[redirects]]
+  from = "/r/en/*"
+  to = "/r/en/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/r/ar/*"
+  to = "/r/ar/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/r/de/*"
+  to = "/r/de/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/r/es/*"
+  to = "/r/es/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/r/fr/*"
+  to = "/r/fr/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/r/hi/*"
+  to = "/r/hi/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/r/zh/*"
+  to = "/r/zh/404.html"
+  status = 404

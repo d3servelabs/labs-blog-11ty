@@ -6,6 +6,7 @@ tags: ['faq']
 authors: ['namefiteam']
 draft: false
 description: A domain name is the foundation of your online presence.
+keywords: ['domain name', 'DNS', 'Domain Name System', 'IP address', 'web address', 'internet basics', 'domain registration', 'website address', 'URL', 'namefi']
 ---
 
 ## **What is a Domain Name?**

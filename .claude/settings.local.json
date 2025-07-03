@@ -19,7 +19,9 @@
       "Bash(node scripts/translate.mjs:*)",
       "Bash(npm install:*)",
       "Bash(npm run translate:*)",
-      "Bash(node scripts/prebuild-og-images.mjs:*)"
+      "Bash(node scripts/prebuild-og-images.mjs:*)",
+      "Bash(npm run lint:yaml:*)",
+      "Bash(npm run gen:i18n:*)"
     ],
     "deny": []
   }

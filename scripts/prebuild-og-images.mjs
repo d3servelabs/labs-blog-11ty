@@ -79,6 +79,7 @@ function getAllMarkdownFiles(dirPath, basePath = '') {
 }
 
 async function generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt, sourceFilePath) {
+  const startTime = Date.now()
   const config = languageConfigs[lang] || languageConfigs.default
   const { fontUrl, fontFamily, isRTL } = config
   
@@ -249,7 +250,7 @@ async function main(options = {}) {
         const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
         
         // Check if generation is needed
-        if (!options.noCache && !shouldRegenerate(fileInfo.fullPath, 'ogImages', dependenciesHash)) {
+        if (!options.skipCache && !shouldRegenerate(fileInfo.fullPath, 'ogImages', dependenciesHash)) {
           console.log(`⏭️  Skipping: ${lang}/blog/${relativePathWithoutExt} (unchanged)`)
           skippedFiles++
           continue
@@ -302,7 +303,7 @@ program
   .name('prebuild-og-images')
   .description('Generate Open Graph images for blog posts with intelligent caching')
   .version('2.0.0')
-  .option('--no-cache', 'Bypass cache and regenerate all images')
+  .option('--skip-cache', 'Bypass cache and regenerate all images')
   .option('--clean-cache', 'Clean the cache and exit')
   .option('--cache-stats', 'Display cache statistics and exit')
   .action(async (options) => {

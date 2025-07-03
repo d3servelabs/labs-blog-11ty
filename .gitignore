@@ -6,6 +6,7 @@ dist
 
 # cache
 .cache
+!.cache/generation-cache.yaml
 
 # secret data
 .env
