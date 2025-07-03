@@ -179,3 +179,8 @@ The translation system automatically localizes URLs within content to maintain p
 - Supports intelligent caching, URL localization, and specialized keywords translation
 - Handles translations for blog, tld, glossary, and partners content types
 - Uses advanced caching mechanisms to optimize translation performance and reduce unnecessary API calls
+
+### to memorize
+```
+
+</invoke>

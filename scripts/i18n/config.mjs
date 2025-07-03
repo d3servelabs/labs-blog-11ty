@@ -24,12 +24,12 @@ export const CONTENT_TYPE_TOKENS = {
   'general': 1500
 };
 
-// Language names for Gemini prompts
+// Language names for AI model prompts
 export const LANGUAGE_NAMES = {
   'en': 'English',
   'de': 'German',
   'es': 'Spanish', 
-  'zh': 'Chinese (Simplified)',
+  'zh': 'Chinese',
   'ar': 'Arabic',
   'fr': 'French',
   'hi': 'Hindi'

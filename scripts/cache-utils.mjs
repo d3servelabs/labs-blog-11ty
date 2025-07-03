@@ -153,7 +153,7 @@ function createEmptyCache() {
  * Check if a file needs regeneration based on cache
  * @param {string} filePath - Source file path
  * @param {string} type - Cache type ('ogImages' or 'translations')
- * @param {string} dependenciesHash - Hash of dependencies
+ * @param {string} dependenciesHash - Hash of dependencies (ignored for translations)
  * @returns {boolean} True if file needs regeneration
  */
 export function shouldRegenerate(filePath, type, dependenciesHash = '') {
@@ -174,8 +174,9 @@ export function shouldRegenerate(filePath, type, dependenciesHash = '') {
     return true;
   }
   
-  // Check if dependencies changed
-  if (dependenciesHash && fileCache.dependenciesHash !== dependenciesHash) {
+  // For translations, ONLY check file content - ignore dependencies
+  // For OG images, still check dependencies for compatibility
+  if (type === 'ogImages' && dependenciesHash && fileCache.dependenciesHash !== dependenciesHash) {
     cache.stats.cacheMisses++;
     return true;
   }

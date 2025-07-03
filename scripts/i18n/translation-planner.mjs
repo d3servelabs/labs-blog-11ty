@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { TokenEstimator } from './utils.mjs';
 import { SCRIPT_VERSION } from './config.mjs';
 import {
@@ -111,22 +112,23 @@ export class TranslationPlanner {
       return true;
     }
     
-    // Deep cache validation
-    const dependenciesHash = this.fileProcessor.getTranslationPromptHash(sourceLang, targetLang);
-    const needsRegeneration = shouldRegenerate(filePath, 'translations', dependenciesHash);
+    // Cache validation - only check file content, ignore dependencies
+    const needsRegeneration = shouldRegenerate(filePath, 'translations');
     
     if (needsRegeneration) {
       // Get cache details for detailed logging
-      const cacheReason = this.getCacheDecisionReason(filePath, dependenciesHash);
+      const cacheReason = this.getCacheDecisionReason(filePath);
       console.log(`🔍 ${fileName} -> ${targetLang}: ${cacheReason}, processing`);
     } else {
-      console.log(`✅ ${fileName} -> ${targetLang}: Same hash, skipped`);
+      // Show the actual content hash for transparency
+      const contentHash = getGitFileHash(filePath);
+      console.log(`✅ ${fileName} -> ${targetLang}: Same content hash (${contentHash.substring(0, 8)}), skipped`);
     }
     
     return needsRegeneration;
   }
   
-  getCacheDecisionReason(filePath, expectedDependenciesHash) {
+  getCacheDecisionReason(filePath) {
     try {
       const cache = loadCache();
       const cacheEntry = cache.translations?.[filePath];
@@ -140,8 +142,12 @@ export class TranslationPlanner {
         return "Content hash changed";
       }
       
-      if (cacheEntry.dependenciesHash !== expectedDependenciesHash) {
-        return "Dependencies hash changed";
+      // Check if output files exist
+      if (cacheEntry.outputs) {
+        const outputsExist = cacheEntry.outputs.every(outputPath => existsSync(outputPath));
+        if (!outputsExist) {
+          return "Output files missing";
+        }
       }
       
       return "Cache validation failed";

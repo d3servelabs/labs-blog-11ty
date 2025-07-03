@@ -75,19 +75,44 @@ class StructuredResponseParser {
   extractLanguageSections(response, targetLanguages) {
     const sections = {};
     
-    // Create language patterns based on expected target languages
+    // Create language patterns based on expected target languages with fallbacks
     const languagePatterns = targetLanguages.map(lang => {
       const langName = LANGUAGE_NAMES[lang]?.toUpperCase() || lang.toUpperCase();
-      return { code: lang, name: langName, pattern: new RegExp(`=== ${langName} TRANSLATIONS ===(.*?)(?==== |$)`, 'is') };
+      
+      // Define fallback patterns for each language, especially Chinese
+      const fallbackPatterns = {
+        'zh': ['CHINESE', 'CHINESE (SIMPLIFIED)', 'CHINESE SIMPLIFIED', 'MANDARIN'],
+        'ar': ['ARABIC'],
+        'fr': ['FRENCH'],
+        'de': ['GERMAN'],
+        'es': ['SPANISH'],
+        'hi': ['HINDI'],
+        'en': ['ENGLISH']
+      };
+      
+      const patterns = fallbackPatterns[lang] || [langName];
+      return { code: lang, name: langName, patterns };
     });
 
-    for (const { code, name, pattern } of languagePatterns) {
-      const match = response.match(pattern);
+    for (const { code, name, patterns } of languagePatterns) {
+      let match = null;
+      let matchedPattern = null;
+      
+      // Try each pattern until we find a match
+      for (const patternName of patterns) {
+        const pattern = new RegExp(`=== ${patternName} TRANSLATIONS ===(.*?)(?==== |$)`, 'is');
+        match = response.match(pattern);
+        if (match) {
+          matchedPattern = patternName;
+          break;
+        }
+      }
+      
       if (match) {
         sections[code] = match[1].trim();
-        console.log(`📋 Found ${name} section (${match[1].length} chars)`);
+        console.log(`📋 Found ${matchedPattern} section (${match[1].length} chars)`);
       } else {
-        console.warn(`⚠️  No ${name} section found in response`);
+        console.warn(`⚠️  No ${name} section found in response (tried: ${patterns.join(', ')})`);
       }
     }
 
