@@ -78,12 +78,12 @@ function getAllMarkdownFiles(dirPath, basePath = '') {
   return files
 }
 
-async function generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt, sourceFilePath) {
+async function generateOGWithPuppeteer(browser, title, lang, contentType, relativePathWithoutExt, sourceFilePath) {
   const startTime = Date.now()
   const config = languageConfigs[lang] || languageConfigs.default
   const { fontUrl, fontFamily, isRTL } = config
   
-  const outDir = join(outputDir, lang, 'blog', dirname(relativePathWithoutExt))
+  const outDir = join(outputDir, lang, contentType, dirname(relativePathWithoutExt))
   mkdirSync(outDir, { recursive: true })
   const outBase = join(outDir, basename(relativePathWithoutExt))
 
@@ -162,7 +162,7 @@ async function generateOGWithPuppeteer(browser, title, lang, relativePathWithout
     updateCacheEntry(sourceFilePath, 'ogImages', outputs, dependenciesHash)
     
     const elapsed = Date.now() - startTime
-    console.log(`✅ Generated: ${lang}/blog/${relativePathWithoutExt}.png and .jpg (${title}) [${elapsed}ms]`)
+    console.log(`✅ Generated: ${lang}/${contentType}/${relativePathWithoutExt}.png and .jpg (${title}) [${elapsed}ms]`)
     
     return { outputs, elapsed }
   } finally {
@@ -192,8 +192,9 @@ async function processConcurrently(tasks, concurrencyLimit) {
   return Promise.all(results)
 }
 
-// 处理所有语言下 blog 目录的所有 .md 文件（包括子目录）
+// 处理所有语言下所有内容类型目录的所有 .md 文件（包括子目录）
 const languages = ['en', 'zh', 'ar', 'de', 'es', 'fr', 'hi', 'fa']
+const contentTypes = ['blog', 'tld', 'glossary', 'partners']
 
 async function main(options = {}) {
   const scriptStartTime = Date.now()
@@ -231,40 +232,42 @@ async function main(options = {}) {
     const dependenciesHash = getDependenciesHash([logoPath], SCRIPT_VERSION)
 
     for (const lang of languages) {
-      const blogDir = join(projectRoot, '..', 'src', lang, 'blog')
-      let markdownFiles
-      try {
-        markdownFiles = getAllMarkdownFiles(blogDir)
-      } catch (e) {
-        console.warn(`No blog dir for language: ${lang}`)
-        continue
-      }
-      
-      console.log(`Found ${markdownFiles.length} markdown files in ${lang}/blog/`)
-      totalFiles += markdownFiles.length
-      
-      for (const fileInfo of markdownFiles) {
-        const raw = readFileSync(fileInfo.fullPath, 'utf-8')
-        const { data } = matter(raw)
-        const title = data.title || 'Untitled'
-        const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
-        
-        // Check if generation is needed
-        if (!options.skipCache && !shouldRegenerate(fileInfo.fullPath, 'ogImages', dependenciesHash)) {
-          console.log(`⏭️  Skipping: ${lang}/blog/${relativePathWithoutExt} (unchanged)`)
-          skippedFiles++
+      for (const contentType of contentTypes) {
+        const contentDir = join(projectRoot, '..', 'src', lang, contentType)
+        let markdownFiles
+        try {
+          markdownFiles = getAllMarkdownFiles(contentDir)
+        } catch (e) {
+          console.warn(`No ${contentType} dir for language: ${lang}`)
           continue
         }
         
-        // Create a task function for this file
-        allTasks.push(async () => {
-          try {
-            await generateOGWithPuppeteer(browser, title, lang, relativePathWithoutExt, fileInfo.fullPath)
-          } catch (e) {
-            console.error(`❌ Failed: ${lang}/blog/${relativePathWithoutExt}.png/.jpg (${title})`)
-            console.error(`   Reason: ${e.message}`)
+        console.log(`Found ${markdownFiles.length} markdown files in ${lang}/${contentType}/`)
+        totalFiles += markdownFiles.length
+        
+        for (const fileInfo of markdownFiles) {
+          const raw = readFileSync(fileInfo.fullPath, 'utf-8')
+          const { data } = matter(raw)
+          const title = data.title || 'Untitled'
+          const relativePathWithoutExt = fileInfo.relativePath.replace(/\.md$/, '')
+          
+          // Check if generation is needed
+          if (!options.skipCache && !shouldRegenerate(fileInfo.fullPath, 'ogImages', dependenciesHash)) {
+            console.log(`⏭️  Skipping: ${lang}/${contentType}/${relativePathWithoutExt} (unchanged)`)
+            skippedFiles++
+            continue
           }
-        })
+          
+          // Create a task function for this file
+          allTasks.push(async () => {
+            try {
+              await generateOGWithPuppeteer(browser, title, lang, contentType, relativePathWithoutExt, fileInfo.fullPath)
+            } catch (e) {
+              console.error(`❌ Failed: ${lang}/${contentType}/${relativePathWithoutExt}.png/.jpg (${title})`)
+              console.error(`   Reason: ${e.message}`)
+            }
+          })
+        }
       }
     }
 
