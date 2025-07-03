@@ -1,5 +1,5 @@
 ---
-title: Place de marché (ex: OpenSea, Blur)
+title: "Place de marché (ex: OpenSea, Blur)"
 date: '2025-06-30'
 language: fr
 tags: ["glossary"]

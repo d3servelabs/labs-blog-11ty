@@ -4,7 +4,7 @@ date: '2025-06-19'
 language: es
 tags: ["tld"]
 authors: ["namefiteam"]
-description: .xyz es un dominio moderno y abierto para creadores, startups y Web3. Únete a innovadores como abc.xyz: registra tu .xyz ahora en Namefi.io.
+description: ".xyz es un dominio moderno y abierto para creadores, startups y Web3. Únete a innovadores como abc.xyz: registra tu .xyz ahora en Namefi.io."
 keywords: ["tld", "dominio xyz", "dominio moderno", "web3", "startup", "innovación"]
 ---
 

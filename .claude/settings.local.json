@@ -30,7 +30,8 @@
       "Bash(sed:*)",
       "Bash(for:*)",
       "Bash(do echo \"Checking $file...\")",
-      "Bash(echo \"✅ $file is valid\")"
+      "Bash(echo \"✅ $file is valid\")",
+      "Bash(npm start)"
     ],
     "deny": []
   }
