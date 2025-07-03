@@ -2,7 +2,9 @@ import { TokenEstimator } from './utils.mjs';
 import { SCRIPT_VERSION } from './config.mjs';
 import {
   shouldRegenerate,
-  getDependenciesHash
+  getDependenciesHash,
+  loadCache,
+  getGitFileHash
 } from '../cache-utils.mjs';
 
 // Translation planning utilities
@@ -93,19 +95,59 @@ export class TranslationPlanner {
   }
   
   async isTranslationNeeded(filePath, targetLang, sourceLang, skipCache) {
-    if (skipCache) return true;
+    const fileName = filePath.split('/').pop();
+    
+    if (skipCache) {
+      console.log(`🔄 ${fileName} -> ${targetLang}: Skip cache enabled, processing`);
+      return true;
+    }
     
     // Quick file existence check
     const targetPath = this.fileProcessor.generateTargetPath(filePath, targetLang, sourceLang);
     const targetExists = await this.fileProcessor.fileExists(targetPath);
     
-    if (!targetExists) return true;
+    if (!targetExists) {
+      console.log(`📁 ${fileName} -> ${targetLang}: Target file missing, processing`);
+      return true;
+    }
     
     // Deep cache validation
-    const promptHash = this.fileProcessor.getTranslationPromptHash(sourceLang, targetLang);
-    const dependenciesHash = getDependenciesHash([], `${SCRIPT_VERSION}-${promptHash}`);
+    const dependenciesHash = this.fileProcessor.getTranslationPromptHash(sourceLang, targetLang);
+    const needsRegeneration = shouldRegenerate(filePath, 'translations', dependenciesHash);
     
-    return shouldRegenerate(filePath, 'translations', dependenciesHash);
+    if (needsRegeneration) {
+      // Get cache details for detailed logging
+      const cacheReason = this.getCacheDecisionReason(filePath, dependenciesHash);
+      console.log(`🔍 ${fileName} -> ${targetLang}: ${cacheReason}, processing`);
+    } else {
+      console.log(`✅ ${fileName} -> ${targetLang}: Same hash, skipped`);
+    }
+    
+    return needsRegeneration;
+  }
+  
+  getCacheDecisionReason(filePath, expectedDependenciesHash) {
+    try {
+      const cache = loadCache();
+      const cacheEntry = cache.translations?.[filePath];
+      
+      if (!cacheEntry) {
+        return "No existing cache entry";
+      }
+      
+      const currentContentHash = getGitFileHash(filePath);
+      if (cacheEntry.contentHash !== currentContentHash) {
+        return "Content hash changed";
+      }
+      
+      if (cacheEntry.dependenciesHash !== expectedDependenciesHash) {
+        return "Dependencies hash changed";
+      }
+      
+      return "Cache validation failed";
+    } catch (error) {
+      return `Cache check error: ${error.message}`;
+    }
   }
   
   printAnalysisReport(analysis) {

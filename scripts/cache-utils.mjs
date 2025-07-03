@@ -224,6 +224,45 @@ export function updateCacheEntry(filePath, type, outputs = [], dependenciesHash 
 }
 
 /**
+ * Add a single translation pair to existing cache entry
+ * @param {string} filePath - Source file path
+ * @param {string} targetFilePath - Target translation file path
+ * @param {string} dependenciesHash - Hash of dependencies
+ */
+export function addTranslationToCache(filePath, targetFilePath, dependenciesHash = '') {
+  const cache = loadCache();
+  
+  // Ensure translations cache exists
+  if (!cache.translations) {
+    cache.translations = {};
+  }
+  
+  // Get or create cache entry for this file
+  if (!cache.translations[filePath]) {
+    cache.translations[filePath] = {
+      contentHash: getGitFileHash(filePath),
+      dependenciesHash: dependenciesHash,
+      lastGenerated: new Date().toISOString(),
+      outputs: []
+    };
+  }
+  
+  // Add target file to outputs if not already present
+  if (!cache.translations[filePath].outputs.includes(targetFilePath)) {
+    cache.translations[filePath].outputs.push(targetFilePath);
+  }
+  
+  // Update timestamp and dependencies hash
+  cache.translations[filePath].lastGenerated = new Date().toISOString();
+  cache.translations[filePath].dependenciesHash = dependenciesHash;
+  
+  // Update stats
+  cache.stats.totalFiles = Object.keys(cache.ogImages).length + Object.keys(cache.translations).length;
+  
+  saveCache(cache);
+}
+
+/**
  * Clean cache (remove all entries)
  */
 export function cleanCache() {

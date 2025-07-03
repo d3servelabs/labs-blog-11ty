@@ -47,7 +47,7 @@ class BatchOptimizer {
       groupByContentType = true, 
       enableMultiLanguage = true, 
       enableTokenAwareBatching = false,
-      maxContextRatio = 0.75,
+      maxContextRatio = 0.25,
       tokenExpansionFactor = 1.2
     } = options;
     
@@ -418,10 +418,11 @@ class TokenAwareBatchBuilder {
   constructor(modelName = 'gemini-2.5-flash', options = {}) {
     this.modelName = modelName;
     this.contextLimit = MODEL_LIMITS[modelName] || MODEL_LIMITS['gemini-2.5-flash'];
-    this.maxContextRatio = options.maxContextRatio || 0.75; // Use 75% of context window
+    this.maxContextRatio = options.maxContextRatio || 0.25; // Use 25% of context window
     this.tokenExpansionFactor = options.tokenExpansionFactor || 1.2; // Translation expansion
-    this.promptOverhead = options.promptOverhead || 2000; // Conservative prompt overhead
-    this.formattingOverhead = options.formattingOverhead || 500; // Delimiters and structure
+    this.promptOverhead = options.promptOverhead || 5000; // Much larger prompt overhead for unified prompts
+    this.formattingOverhead = options.formattingOverhead || 2000; // More overhead for multi-language structure
+    this.maxPromptChars = options.maxPromptChars || 30000; // Conservative prompt character limit for reliability
   }
 
   /**
@@ -446,21 +447,21 @@ class TokenAwareBatchBuilder {
   estimateInputTokens(content, contentType = 'general') {
     if (!content || typeof content !== 'string') return 0;
     
-    // More precise token estimation based on content analysis
+    // Conservative token estimation based on real-world prompt generation
     const charCount = content.length;
     const markdownOverhead = (content.match(/[#*`\[\]()]/g) || []).length * 0.5;
-    const urlCount = (content.match(/https?:\/\/\S+/g) || []).length * 3; // URLs are token-heavy
+    const urlCount = (content.match(/https?:\/\/\S+/g) || []).length * 3;
     
-    // Base token estimation (~3.5 chars per token for English, adjusted for content type)
+    // More conservative chars per token ratios (real-world is 4-4.5 chars/token)
     const contentTypeMultipliers = {
-      'glossary': 3.2,  // Technical terms are more token-dense
-      'tld': 3.4,
-      'partners': 3.6,
-      'blog': 3.8,      // More natural language
-      'general': 3.5
+      'glossary': 3.0,  // Technical terms are token-dense
+      'tld': 3.2,
+      'partners': 3.4,
+      'blog': 3.6,      
+      'general': 3.2
     };
     
-    const charsPerToken = contentTypeMultipliers[contentType] || 3.5;
+    const charsPerToken = contentTypeMultipliers[contentType] || 3.2;
     const baseTokens = Math.ceil(charCount / charsPerToken);
     
     return Math.ceil(baseTokens + markdownOverhead + urlCount);
@@ -489,30 +490,85 @@ class TokenAwareBatchBuilder {
   }
 
   /**
-   * Check if a file can fit in the current batch
+   * Check if a file can fit in the current batch (dual constraints: tokens AND prompt length)
    */
-  canFitInBatch(currentBatchTokens, fileTokens) {
+  canFitInBatch(currentBatchTokens, fileTokens, currentBatchFiles = 0, targetLanguageCount = 1) {
+    // Token constraint
     const availableTokens = this.getAvailableTokens();
-    return (currentBatchTokens + fileTokens.totalTokens) <= availableTokens;
+    const tokenLimitOk = (currentBatchTokens + fileTokens.totalTokens) <= availableTokens;
+    
+    // Prompt character length constraint
+    const currentPromptChars = this.estimatePromptLength(currentBatchFiles, targetLanguageCount);
+    const newFilePromptChars = this.estimateFilePromptContribution(fileTokens.inputTokens);
+    const proposedPromptChars = currentPromptChars + newFilePromptChars;
+    const promptLimitOk = proposedPromptChars <= this.maxPromptChars;
+    
+    // Debug logging for constraint hits
+    if (!tokenLimitOk && promptLimitOk) {
+      console.log(`🚫 Token limit hit: ${currentBatchTokens + fileTokens.totalTokens} > ${availableTokens} tokens`);
+    } else if (tokenLimitOk && !promptLimitOk) {
+      console.log(`🚫 Prompt limit hit: ${proposedPromptChars} > ${this.maxPromptChars} chars`);
+    } else if (!tokenLimitOk && !promptLimitOk) {
+      console.log(`🚫 Both limits hit: tokens(${currentBatchTokens + fileTokens.totalTokens}>${availableTokens}) & prompt(${proposedPromptChars}>${this.maxPromptChars})`);
+    }
+    
+    return tokenLimitOk && promptLimitOk;
+  }
+  
+  /**
+   * Estimate the character length of the unified prompt
+   */
+  estimatePromptLength(fileCount, targetLanguageCount) {
+    // More realistic estimate based on actual unified prompt structure
+    const headerChars = 2000; // Base prompt header and instructions (more verbose)
+    const requirementsChars = 2500; // Critical requirements section (comprehensive)
+    const languageHeaderChars = targetLanguageCount * 300; // Language section headers with formatting
+    const outputFormatChars = fileCount * targetLanguageCount * 500; // Output format template per file per language
+    const basePromptOverhead = 3000; // Additional template overhead, delimiters, etc.
+    
+    return headerChars + requirementsChars + languageHeaderChars + outputFormatChars + basePromptOverhead;
+  }
+  
+  /**
+   * Estimate how many characters a single file will add to the prompt
+   */
+  estimateFilePromptContribution(inputTokens) {
+    // More realistic estimate based on actual prompt generation
+    const contentChars = inputTokens * 4.0; // More conservative token-to-char conversion
+    const frontMatterChars = 500; // YAML frontmatter with localized URLs
+    const markdownFormatting = 400; // FILE headers, delimiters, and structure
+    const templateOverhead = 300; // Additional template formatting per file
+    
+    return contentChars + frontMatterChars + markdownFormatting + templateOverhead;
   }
 
   /**
    * Create optimal batches using greedy bin-packing algorithm
    */
   createOptimalBatches(tasks, options = {}) {
-    const { enableUnifiedBatching = true, maxFilesPerBatch = 5 } = options;
+    const { enableUnifiedBatching = true, maxFilesPerBatch } = options;
     
     if (!enableUnifiedBatching) {
       // Fallback to traditional batching
       return this.createTraditionalBatches(tasks, options);
     }
 
-    console.log(`🧠 Creating token-aware batches with ${this.maxContextRatio * 100}% context utilization`);
+    console.log(`🧠 Creating language-prioritized batches with ${this.maxContextRatio * 100}% context utilization`);
     
-    // Group tasks by source file
+    return this.createLanguagePrioritizedBatches(tasks, options);
+  }
+  
+  /**
+   * Create batches that prioritize language coverage per file for maximum efficiency
+   */
+  createLanguagePrioritizedBatches(tasks, options = {}) {
+    // Group tasks by source file to get all target languages per file
     const sourceFileGroups = this.groupTasksBySourceFile(tasks);
     
-    // Sort by file size (smallest first for better packing)
+    // Get all unique target languages
+    const allTargetLanguages = [...new Set(tasks.map(task => task.targetLang))];
+    
+    // Sort files by size (smallest first for better packing)
     const sortedFiles = Object.values(sourceFileGroups).sort((a, b) => 
       a.estimatedInputTokens - b.estimatedInputTokens
     );
@@ -521,19 +577,24 @@ class TokenAwareBatchBuilder {
     let currentBatch = null;
     let currentBatchTokens = 0;
 
+    console.log(`🎯 Prioritizing language coverage: ${allTargetLanguages.length} languages per file`);
+
     for (const fileGroup of sortedFiles) {
-      // Calculate token requirements for this file + all its target languages
+      // Always try to include ALL target languages for this file (maximum efficiency)
       const fileTokens = this.estimateFileTokens(
         fileGroup.sourceFile,
         fileGroup.content || '',
-        fileGroup.targetLanguages,
+        allTargetLanguages, // Use all target languages, not just the ones for this file
         fileGroup.contentType
       );
 
-      // Check if we can fit this file in the current batch
-      if (!currentBatch || !this.canFitInBatch(currentBatchTokens, fileTokens) || 
-          currentBatch.sourceFiles.length >= maxFilesPerBatch) {
+      // Check if we can fit this file with ALL languages in the current batch
+      const currentBatchFiles = currentBatch ? currentBatch.sourceFiles.length : 0;
+      const canFit = currentBatch ? 
+        this.canFitInBatch(currentBatchTokens, fileTokens, currentBatchFiles, allTargetLanguages.length) : 
+        false;
         
+      if (!currentBatch || !canFit) {
         // Finalize current batch if it exists
         if (currentBatch) {
           batches.push(this.finalizeBatch(currentBatch));
@@ -541,11 +602,17 @@ class TokenAwareBatchBuilder {
 
         // Start new batch
         currentBatch = this.createNewBatch(batches.length + 1, fileGroup.contentType);
+        currentBatch.allTargetLanguages = new Set(allTargetLanguages);
         currentBatchTokens = 0;
       }
 
-      // Add file to current batch
-      this.addFileToBatch(currentBatch, fileGroup, fileTokens);
+      // Add file to current batch with ALL target languages
+      const enhancedFileGroup = {
+        ...fileGroup,
+        targetLanguages: allTargetLanguages // Ensure all languages are covered
+      };
+      
+      this.addFileToBatch(currentBatch, enhancedFileGroup, fileTokens);
       currentBatchTokens += fileTokens.totalTokens;
     }
 
@@ -628,6 +695,11 @@ class TokenAwareBatchBuilder {
     batch.contextUtilization = (batch.estimatedTokens / availableTokens) * 100;
     batch.estimatedTime = this.estimateProcessingTime(batch.estimatedTokens);
     
+    // Add prompt length estimation
+    const targetLanguageCount = batch.allTargetLanguages.size;
+    batch.estimatedPromptChars = this.estimatePromptLength(batch.sourceFiles.length, targetLanguageCount);
+    batch.promptUtilization = (batch.estimatedPromptChars / this.maxPromptChars) * 100;
+    
     return batch;
   }
 
@@ -677,10 +749,12 @@ class TokenAwareBatchBuilder {
         `${Math.ceil(batch.estimatedTime / 60)}m${batch.estimatedTime % 60}s`;
       
       const languages = Array.from(batch.allTargetLanguages).join(',');
-      const utilization = batch.contextUtilization.toFixed(1);
+      const tokenUtilization = batch.contextUtilization.toFixed(1);
+      const promptUtilization = batch.promptUtilization.toFixed(1);
       
       console.log(`   Batch ${index + 1}: ${batch.sourceFiles.length} files → [${languages}] (${batch.totalTasks} translations)`);
-      console.log(`      Tokens: ${batch.estimatedTokens.toLocaleString()} / ${this.getAvailableTokens().toLocaleString()} (${utilization}% utilization)`);
+      console.log(`      Tokens: ${batch.estimatedTokens.toLocaleString()} / ${this.getAvailableTokens().toLocaleString()} (${tokenUtilization}% utilization)`);
+      console.log(`      Prompt: ${batch.estimatedPromptChars.toLocaleString()} / ${this.maxPromptChars.toLocaleString()} chars (${promptUtilization}% utilization)`);
       console.log(`      Time: ~${timeStr}`);
       
       totalTasks += batch.totalTasks;

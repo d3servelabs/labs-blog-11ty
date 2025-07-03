@@ -1,11 +1,12 @@
 ---
-title: Tokéniser
+title: Tokeniser
 date: '2025-06-29'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
-description: Que signifie tokéniser un domaine ou un actif?
-keywords: ["tokéniser","tokénisation","NFT","actif numérique","actif on-chain"]
+description: Que signifie tokeniser un domaine ou un actif ?
+keywords: ["tokeniser","tokenisation","NFT","actif numérique","actif on-chain"]
 ---
 
-**Tokéniser** quelque chose signifie le convertir en un jeton numérique qui existe sur une blockchain. Dans le cas de Namefi, tokéniser un domaine transforme un actif [DNS]({{ '/fr/glossary/dns/' | url }}) du monde réel (comme `mybrand.xyz`) en un [NFT]({{ '/fr/glossary/nft/' | url }}) échangeable et programmable. Ce jeton peut être stocké dans un [portefeuille]({{ '/fr/glossary/wallet/' | url }}), transféré instantanément ou intégré à des [contrats intelligents]({{ '/fr/glossary/smart-contract/' | url }}). La tokénisation confère aux domaines des propriétés natives d'Internet telles que la [composabilité]({{ '/fr/glossary/composability/' | url }}) et l'automatisation. Elle ne modifie pas le statut juridique du domaine, mais elle améliore la façon dont vous pouvez l'utiliser, le commercialiser et le sécuriser, sans dépendre d'intermédiaires.
+
+**Tokeniser** quelque chose signifie le convertir en un jeton numérique qui existe sur une blockchain. Dans le cas de Namefi, tokeniser un domaine transforme un actif [DNS]({{ '/fr/glossary/dns/' | url }}) du monde réel (comme `mybrand.xyz`) en un [NFT]({{ '/fr/glossary/nft/' | url }}) négociable et programmable. Ce jeton peut être stocké dans un [portefeuille]({{ '/fr/glossary/wallet/' | url }}), transféré instantanément, ou intégré à des [contrats intelligents]({{ '/fr/glossary/smart-contract/' | url }}). La tokenisation confère aux domaines des propriétés "internet-native" comme la [composabilité]({{ '/fr/glossary/composability/' | url }}) et l'automatisation. Cela ne change pas le statut juridique du domaine, mais cela améliore la façon dont vous pouvez l'utiliser, le échanger et le sécuriser – sans dépendre d'intermédiaires.

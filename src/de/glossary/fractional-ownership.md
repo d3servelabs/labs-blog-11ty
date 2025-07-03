@@ -1,11 +1,11 @@
 ---
-title: Bruchteilsbesitz
+title: Fraktionelles Eigentum
 date: '2025-06-30'
 language: de
 tags: ["glossary"]
 authors: ["namefiteam"]
-description: Was ist Bruchteilsbesitz und wie wird er auf wertvolle Domains angewendet?
-keywords: ["Bruchteilsbesitz","geteilter Besitz","Domain-Fragmentierung","Zugänglichkeit","Tokenisierung"]
+description: Was ist fraktionelles Eigentum und wie wird es auf wertvolle Domains angewendet?
+keywords: ["fraktionelles Eigentum","gemeinsames Eigentum","Domain-Fragmentierung","Zugänglichkeit","Tokenisierung"]
 ---
 
-**Bruchteilsbesitz** ermöglicht es mehreren Parteien, Anteile an einem einzelnen Vermögenswert zu besitzen, wodurch teure Vermögenswerte für kleinere Investoren zugänglicher werden. Im Immobilienbereich könnte dies bedeuten, dass mehrere Investoren Teile einer Immobilie besitzen. Für Domains ermöglicht der Bruchteilsbesitz mehreren Personen, wertvolle Domains gemeinsam zu besitzen, die für einen Einzelkauf zu teuer wären. Eine Premium-Domain wie `ai.com` könnte in Token aufgeteilt werden, die Eigentumsanteile repräsentieren, wodurch Investoren Anteile kaufen und an potenziellen Wertsteigerungen oder [Einnahmen]({{ '/de/glossary/revenue-sharing/' | url }}) teilhaben können. Dies demokratisiert den Zugang zu hochwertigen digitalen Immobilien und ermöglicht es Domain-Besitzern, ihre Vermögenswerte teilweise zu monetarisieren, ohne sie vollständig zu verkaufen.
+**Fraktionelles Eigentum** ermöglicht es mehreren Parteien, Anteile an einem einzigen Vermögenswert zu besitzen, wodurch teure Vermögenswerte für kleinere Investoren zugänglicher werden. Im Immobilienbereich könnte dies bedeuten, dass mehrere Investoren Teile einer Immobilie besitzen. Für Domains ermöglicht fraktionelles Eigentum mehreren Personen, wertvolle Domains gemeinsam zu besitzen, die für einen einzelnen Kauf zu teuer sein könnten. Eine Premium-Domain wie `ai.com` könnte in Token fraktioniert werden, die Eigentumsanteile repräsentieren, sodass Investoren Anteile kaufen und am potenziellen Wertzuwachs oder den [Einnahmen]({{ '/de/glossary/revenue-sharing/' | url }}) teilhaben können. Dies demokratisiert den Zugang zu hochwertigem digitalen Immobilienbesitz und ermöglicht es Domain-Eigentümern, ihre Vermögenswerte teilweise zu monetarisieren, ohne sie vollständig zu verkaufen.

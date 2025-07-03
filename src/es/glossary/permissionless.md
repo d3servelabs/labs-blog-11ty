@@ -1,11 +1,12 @@
 ---
-title: Sin Permisos
+title: Sin Permiso
 date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
-description: ¿Qué significa "sin permisos" en la blockchain y la gestión de dominios?
-keywords: ["sin permisos","descentralizado","resistente a la censura","acceso abierto","blockchain"]
+description: ¿Qué significa "sin permiso" en el contexto de blockchain y la gestión de dominios?
+keywords: ["sin permiso","descentralizado","resistente a la censura","acceso abierto","blockchain"]
 ---
 
-**Sin permisos** se refiere a sistemas que permiten que cualquiera participe sin requerir la aprobación de una autoridad central. En contextos de blockchain, las redes sin permisos permiten a los usuarios realizar transacciones, construir aplicaciones o interactuar con protocolos sin guardianes. La gestión de dominios tradicional requiere permiso de los [registradores]({{ '/es/glossary/registrar/' | url }}) y sigue sus políticas, pero los dominios tokenizados en Namefi permiten transferencias e integraciones sin permisos. Una vez que posees un dominio tokenizado, puedes comerciarlo, usarlo en protocolos DeFi o construir aplicaciones a su alrededor sin buscar la aprobación de intermediarios, siempre que la red blockchain subyacente sea accesible para ti.
+
+**Sin permiso (Permissionless)** se refiere a sistemas que permiten a cualquier persona participar sin requerir la aprobación de una autoridad central. En contextos de blockchain, las redes sin permiso permiten a los usuarios realizar transacciones, construir aplicaciones o interactuar con protocolos sin intermediarios. La gestión de dominios tradicional requiere permiso de los [registradores]({{ '/es/glossary/registrar/' | url }}) y sigue sus políticas, pero los dominios tokenizados en Namefi permiten transferencias e integraciones sin permiso. Una vez que posees un dominio tokenizado, puedes comerciar con él, usarlo en protocolos DeFi o construir aplicaciones a su alrededor sin buscar la aprobación de intermediarios, siempre y cuando la red blockchain subyacente sea accesible para ti.

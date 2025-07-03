@@ -4,8 +4,9 @@ date: '2025-06-30'
 language: fr
 tags: ["glossary"]
 authors: ["namefiteam"]
-description: Qu'est-ce que le Web3 et comment les domaines s'intègrent-ils dans le web décentralisé ?
+description: Qu'est-ce que le Web3 et comment les domaines s'intègrent-ils au web décentralisé ?
 keywords: ["Web3","web décentralisé","internet blockchain","propriété","pair-à-pair"]
 ---
 
-**Web3** désigne la prochaine évolution d'internet construite sur la technologie blockchain, mettant l'accent sur la décentralisation, la propriété des utilisateurs et les interactions pair-à-pair plutôt que la dépendance aux plateformes centralisées. Contrairement au Web2 où les utilisateurs créent du contenu sur des plateformes qu'ils ne possèdent pas, le Web3 permet aux utilisateurs de posséder directement leurs données, leur identité et leurs actifs numériques. Les domaines jouent un rôle crucial dans le Web3 en tant qu'identifiants décentralisés que les utilisateurs peuvent posséder et contrôler sans intermédiaires. Les domaines [tokenisés]({{ '/fr/glossary/tokenize/' | url }}) deviennent des blocs de construction de l'infrastructure Web3, servant de passerelles vers des applications décentralisées, de référentiels pour les identifiants et d'actifs numériques négociables qui fonctionnent sur différents réseaux et applications blockchain.
+
+**Web3** fait référence à la prochaine évolution d'internet construite sur la technologie blockchain, mettant l'accent sur la décentralisation, la propriété des utilisateurs et les interactions pair-à-pair plutôt que sur la dépendance aux plateformes centralisées. Contrairement au Web2 où les utilisateurs créent du contenu sur des plateformes qu'ils ne possèdent pas, le Web3 permet aux utilisateurs de posséder directement leurs données, leur identité et leurs actifs numériques. Les domaines jouent un rôle crucial dans le Web3 en tant qu'identifiants décentralisés que les utilisateurs peuvent posséder et contrôler sans intermédiaires. Les domaines [tokenisés]({{ '/fr/glossary/tokenize/' | url }}) deviennent des éléments constitutifs de l'infrastructure Web3, servant de passerelles vers des applications décentralisées, de référentiels pour les identifiants et de actifs numériques échangeables qui fonctionnent sur différents réseaux et applications blockchain.

@@ -1,212 +1,195 @@
 ---
-title: Pourquoi tokeniser les domaines on-chain ? N'est-ce pas redondant ?
+title: Pourquoi tokeniser les domaines On-Chain ? N'est-ce pas redondant ?
 date: '2025-06-29'
 language: fr
-tags:
-  - faq
-authors:
-  - namefiteam
-draft: false
-description: >-
-  Cet article explique pourquoi les noms de domaine traditionnels devraient être
-  tokenisés on-chain et met en évidence les avantages qui en découlent, tels
-  qu'une propriété plus claire, la composabilité financière et des échanges plus
-  libres et plus rapides.
-keywords:
-  - domain tokenization
-  - blockchain domains
-  - NFT domains
-  - on-chain domains
-  - domain ownership
-  - decentralized domains
-  - domain trading
-  - web3 domains
-  - smart contracts
-  - domain composability
-  - DNS tokenization
-  - digital assets
+tags: ["faq"]
+authors: ["namefiteam"]
+description: Cet article explique pourquoi les domaines traditionnels devraient être tokenisés on-chain et met en évidence les avantages tels qu'une propriété plus claire, la composabilité financière et un trading plus libre et plus rapide.
+keywords: ["tokenisation de domaine","domaines blockchain","domaines NFT","domaines on-chain","propriété de domaine","domaines décentralisés","trading de domaine","domaines web3","contrats intelligents","composabilité de domaine","tokenisation DNS","actifs numériques"]
 ---
-Vous vous interrogez sans doute : les noms de domaine traditionnels peuvent déjà être enregistrés, utilisés et échangés – pourquoi Namefi voudrait-il les « mettre on-chain » ? Quelle valeur la tokenisation d'un domaine apporte-t-elle réellement ?
 
-Dans cet article, nous expliquons en termes simples ce que la « tokenisation des domaines » signifie réellement, pourquoi c'est important, ce que cela rend possible et ce que cela ne *change pas* en termes de responsabilité légale.
+
+Vous vous demandez peut-être : les domaines traditionnels peuvent déjà être enregistrés, utilisés et échangés — pourquoi Namefi voudrait-il les mettre "on-chain" ? Quelle valeur la tokenisation d'un domaine apporte-t-elle réellement ?
+
+Dans cet article, nous expliquons en langage clair : ce que signifie réellement "tokeniser des domaines", pourquoi c'est important, ce que cela permet, et ce que cela ne change *pas* en termes de responsabilité légale.
 
 ---
 
-## 📧 Analogie n°1 : Courrier Traditionnel vs. E-mail
+## 📧 Analogie n°1 : Courrier traditionnel vs. Email
 
-Tokeniser des domaines, c'est comme passer du **courrier physique via un bureau de poste** à l'**e-mail via internet**.
+Tokeniser des domaines, c'est comme passer du **courrier physique via un bureau de poste** à l'**email via internet**.
 
-Dans le système traditionnel, la propriété et les transferts de domaines sont gérés par des [registraires]({{ '/en/glossary/registrar/' | url }}) (comme des « bureaux de poste agréés »). Si un [registraire]({{ '/en/glossary/registrar/' | url }}) refuse le service, ou si votre région n'autorise que des opérateurs agréés, votre transfert peut être retardé ou entièrement bloqué.
+Dans le système traditionnel, la propriété et les transferts de domaines sont gérés par des [bureaux d'enregistrement]({{ '/fr/glossary/registrar/' | url }}) (comme des "bureaux de poste autorisés"). Si un [bureau d'enregistrement]({{ '/fr/glossary/registrar/' | url }}) refuse le service, ou si votre région n'autorise que les opérateurs agréés, votre transfert peut être retardé ou entièrement bloqué.
 
-Les domaines on-chain fonctionnent davantage comme l'e-mail : **tout [portefeuille]({{ '/en/glossary/wallet/' | url }}), plateforme ou protocole compatible peut librement envoyer, recevoir, échanger ou construire autour d'eux**. Sans gardiens.
+Les domaines on-chain fonctionnent davantage comme des emails : **tout [portefeuille]({{ '/fr/glossary/wallet/' | url }}), plateforme ou protocole compatible peut librement les envoyer, les recevoir, les échanger ou les utiliser comme base de développement**. Pas de gardiens.
 
-Non seulement cela réduit les coûts (des frais de courtage élevés à quasi nuls) et diminue les délais (de jours à secondes), mais cela **ouvre la voie à l'innovation**. Tout comme l'e-mail a évolué au-delà de l'envoi de texte pour permettre les flux de travail de groupe, les pièces jointes et l'automatisation, les **domaines tokenisés débloquent de nouvelles fonctionnalités** telles que les [enchères]({{ '/en/glossary/auction/' | url }}) (néerlandaise, anglaise, dynamique), la [location]({{ '/en/glossary/leasing/' | url }}), la [propriété fractionnée]({{ '/en/glossary/fractional-ownership/' | url }}), le regroupement, et bien plus encore.
+Cela ne réduit pas seulement les coûts (des frais de courtage élevés à presque zéro), ou ne diminue pas les délais (de jours à secondes) — cela **débloque l'innovation**. Tout comme l'email a évolué au-delà de l'envoi de texte pour permettre des flux de travail de groupe, des pièces jointes et l'automatisation, les **domaines tokenisés débloquent de nouvelles fonctionnalités** comme les [enchères]({{ '/fr/glossary/auction/' | url }}) (néerlandaises, anglaises, dynamiques), le [leasing]({{ '/fr/glossary/leasing/' | url }}), la [propriété fractionnée]({{ '/fr/glossary/fractional-ownership/' | url }}), le regroupement, et bien plus encore.
 
-> C'est le passage d'un système cloisonné à une couche d'actifs native d'Internet, [sans permission]({{ '/en/glossary/permissionless/' | url }}).
+> C'est le passage d'un système à gardiens à une couche d'actifs [sans permission]({{ '/fr/glossary/permissionless/' | url }}) native d'internet.
 
 ---
 
-## 💡 Que Signifie Réellement « Tokeniser » ?
+## 💡 Que signifie réellement "Tokeniser" ?
 
 Tokeniser signifie simplement :
 
-> Représenter un actif du monde réel (comme un domaine) sous forme de jeton – le rendant transférable, composable et programmable.
+> Représenter un actif du monde réel (comme un domaine) sous forme de jeton — le rendant transférable, composable et programmable.
 
-Sur Namefi, chaque domaine que vous enregistrez (par exemple `mybrand.xyz`) est automatiquement représenté par un [NFT]({{ '/en/glossary/nft/' | url }}). Vous pouvez :
+Sur Namefi, chaque domaine que vous enregistrez (par exemple `mybrand.xyz`) est automatiquement représenté par un [NFT]({{ '/fr/glossary/nft/' | url }}). Vous pouvez :
 
-- Le transférer à d'autres comme vous enverriez de l'ETH
-- Accorder des droits d'utilisation sans transférer la propriété
-- Le mettre en vente sur des places de marché comme OpenSea
-- Le combiner avec des contrats, des [DAO]({{ '/en/glossary/dao/' | url }}), des sites web ou d'autres applications
+-   Le transférer à d'autres comme l'envoi d'ETH
+-   Accorder des droits d'utilisation sans transférer la propriété
+-   Le lister à la vente sur des marchés comme OpenSea
+-   Le combiner avec des contrats, des [DAOs]({{ '/fr/glossary/dao/' | url }}), des sites web ou d'autres applications
 
-Cela apporte une nouvelle flexibilité et utilité à la propriété de domaines.
-
----
-
-## 🌉 Relier les Actifs Réels au Monde On-Chain
-
-En tokenisant les domaines, Namefi agit comme un **pont** entre l'infrastructure [DNS]({{ '/en/glossary/dns/' | url }}) traditionnelle et les protocoles blockchain ouverts :
-
-| Système Traditionnel         | Monde On-Chain                           |
-|------------------------------|------------------------------------------|
-| Base de données détenue par le [registraire]({{ '/en/glossary/registrar/' | url }}) | [Contrats intelligents]({{ '/en/glossary/smart-contract/' | url }}) sur les blockchains publiques |
-| Transferts manuels, frictions | [Transferts atomiques]({{ '/en/glossary/atomic-transfer/' | url }}) instantanés      |
-| Registres statiques          | [Composables]({{ '/en/glossary/composability/' | url }}) avec la DeFi, l'identité, les [DAO]({{ '/en/glossary/dao/' | url }}) |
-| Vérification centralisée     | Propriété vérifiable on-chain            |
-
-Vous ne faites plus seulement que « louer un nom » – vous détenez un **actif numérique programmable, un portail,** dans votre propre [portefeuille]({{ '/en/glossary/wallet/' | url }}).
+Cela apporte une nouvelle flexibilité et utilité à la propriété de domaine.
 
 ---
 
-## 📈 Trois Avantages Directs des Domaines Tokenisés
+## 🌉 Relier les actifs réels au monde On-Chain
 
-### ✅ 1. Propriété et Transférabilité Plus Libres
+En tokenisant les domaines, Namefi agit comme un **pont** entre l'infrastructure [DNS]({{ '/fr/glossary/dns/' | url }}) traditionnelle et les protocoles blockchain ouverts :
 
-Le transfert de domaines implique traditionnellement :
+| Système traditionnel          | Monde On-Chain                          |
+|-------------------------------|-----------------------------------------|
+| Base de données détenue par le [registraire]({{ '/fr/glossary/registrar/' | url }}) | [Contrats intelligents]({{ '/fr/glossary/smart-contract/' | url }}) sur les blockchains publiques |
+| Transferts manuels, frictions | Transferts [atomiques]({{ '/fr/glossary/atomic-transfer/' | url }}) instantanés           |
+| Enregistrements statiques     | [Composables]({{ '/fr/glossary/composability/' | url }}) en DeFi, identité, [DAOs]({{ '/fr/glossary/dao/' | url }}) |
+| Vérification centralisée      | Propriété vérifiable [on-chain]({{ '/fr/glossary/on-chain/' | url }})          |
 
-- Des codes d'autorisation
-- Une validation au niveau du registraire
-- Des e-mails, des périodes d'attente et des approbations manuelles
-- Des délais inter-registraires (souvent 5 à 7 jours ou plus)
+Vous ne faites plus seulement "louer un nom" — vous détenez un **actif passerelle numérique programmable** dans votre propre [portefeuille]({{ '/fr/glossary/wallet/' | url }}).
 
-Avec Namefi, la propriété est transférée via une seule transaction – en quelques secondes. Vous pouvez également définir des approbations, assigner des gestionnaires ou automatiser la délégation via des [contrats intelligents]({{ '/en/glossary/smart-contract/' | url }}).
+---
 
-### ✅ 2. Propriété Plus Claire et Accès Contrôlé par l'Utilisateur
+## 📈 Trois avantages directs des domaines tokenisés
 
-Avec les [registraires]({{ '/en/glossary/registrar/' | url }}) traditionnels (comme GoDaddy), vous pouvez détenir une licence pour un domaine, mais le **véritable contrôle est souvent sous [garde centralisée]({{ '/en/glossary/custodial-ownership/' | url }})** – soumis à leur interface utilisateur, leurs conditions, leurs politiques de plateforme.
+### ✅ 1. Propriété et transférabilité plus libres
+
+Le transfert traditionnel de domaines implique :
+
+-   Des codes d'autorisation
+-   Une validation au niveau du registraire
+-   Des emails, des périodes d'attente et des approbations manuelles
+-   Des délais de transfert entre registraires (souvent 5 à 7+ jours)
+
+Avec Namefi, la propriété est transférée via une seule transaction — en quelques secondes. Vous pouvez également définir des approbations, désigner des gestionnaires ou automatiser la délégation via des [contrats intelligents]({{ '/fr/glossary/smart-contract/' | url }}).
+
+### ✅ 2. Propriété plus claire et accès contrôlé par l'utilisateur
+
+Avec les [registraires]({{ '/fr/glossary/registrar/' | url }}) traditionnels (comme GoDaddy), vous pouvez détenir une licence pour un domaine, mais le **contrôle réel est souvent [dépositaire]({{ '/fr/glossary/custodial-ownership/' | url }})** — soumis à leur interface utilisateur, à leurs conditions, à leurs politiques de plateforme.
 
 Avec Namefi :
 
-- Votre propriété est enregistrée [on-chain]({{ '/en/glossary/on-chain/' | url }}) en tant que [NFT]({{ '/en/glossary/nft/' | url }})
-- Vous le gérez avec votre propre [portefeuille]({{ '/en/glossary/wallet/' | url }}) – pas un compte hébergé
-- Bien que toujours soumis aux règles DNS du monde réel (renouvellements, usage légal), votre **contrôle est sécurisé cryptographiquement**
+-   Votre propriété est enregistrée [on-chain]({{ '/fr/glossary/on-chain/' | url }}) en tant que [NFT]({{ '/fr/glossary/nft/' | url }})
+-   Vous le gérez avec votre propre [portefeuille]({{ '/fr/glossary/wallet/' | url }}) — pas un compte hébergé
+-   Bien que toujours soumis aux règles DNS du monde réel (renouvellements, utilisation légale), votre **contrôle est cryptographiquement sécurisé**
 
-> Il ne s'agit pas de « domaines permanents et sans censure » – il s'agit d'une *propriété plus claire, axée sur l'utilisateur*.
+> Il ne s'agit pas de "domaines permanents et sans censure" — il s'agit d'une *propriété plus claire et centrée sur l'utilisateur*.
 
-### ✅ 3. Débloquer de Nouveaux Cas d'Usage
+### ✅ 3. Déverrouiller de nouveaux cas d'utilisation
 
 Les domaines tokenisés peuvent être :
 
-- Utilisés comme [garantie]({{ '/en/glossary/collateral/' | url }}) dans les [protocoles de prêt]({{ '/en/glossary/lending-protocol/' | url }})
-- Attachés à des identités décentralisées ([DID]({{ '/en/glossary/did/' | url }})), [Farcaster]({{ '/en/glossary/farcaster/' | url }}), [Lens]({{ '/en/glossary/lens/' | url }}), etc.
-- Liés instantanément à des sites web générés par l'IA via Namefi
-- Gérés par des équipes, des [DAO]({{ '/en/glossary/dao/' | url }}) ou des configurations [multi-signatures]({{ '/en/glossary/multi-sig/' | url }})
+-   Utilisés comme [garantie]({{ '/fr/glossary/collateral/' | url }}) dans les [protocoles de prêt]({{ '/fr/glossary/lending-protocol/' | url }})
+-   Liés instantanément à des identités décentralisées ([DID]({{ '/fr/glossary/did/' | url }})), [Farcaster]({{ '/fr/glossary/farcaster/' | url }}), [Lens]({{ '/fr/glossary/lens/' | url }}), etc.
+-   Connectés instantanément à des sites web générés par l'IA via Namefi
+-   Gérés au sein d'équipes, de [DAOs]({{ '/fr/glossary/dao/' | url }}) ou de configurations [multi-signatures]({{ '/fr/glossary/multi-sig/' | url }})
 
 ---
 
-## 🔗 Composabilité : Du Marché Fermé à l'Actif Natif d'Internet
+## 🔗 Composabilité : D'un marché fermé à un actif natif d'Internet
 
-C'est peut-être la fonctionnalité la plus révolutionnaire mais souvent négligée :
+C'est peut-être la fonctionnalité la plus révolutionnaire mais la plus souvent négligée :
 
-> La tokenisation transforme les domaines en *[actifs protocolaires]({{ '/en/glossary/protocol-asset/' | url }}) ouverts* — n'importe qui peut construire des services, des échanges ou des couches financières autour d'eux.
+> La tokenisation transforme les domaines en *[actifs de protocole]({{ '/fr/glossary/protocol-asset/' | url }}) ouverts* — n'importe qui peut construire des services, des échanges ou des couches financières autour d'eux.
 
-### ✅ Coûts de Trading Dramatiquement Réduits
+### ✅ Coûts de trading considérablement réduits
 
-Les [places de marché]({{ '/en/glossary/marketplace/' | url }}) de domaines traditionnelles (ex. GoDaddy, Sedo) facturent souvent **15% à 30%+ de frais**, ont des retraits lents et des API fermées.
+Les [places de marché]({{ '/fr/glossary/marketplace/' | url }}) de domaines traditionnelles (par exemple GoDaddy, Sedo) facturent souvent **15 % à 30 % et plus de frais**, des retraits lents et des API fermées.
 
-En revanche, les plateformes [NFT]({{ '/en/glossary/nft/' | url }}) [on-chain]({{ '/en/glossary/on-chain/' | url }}) comme OpenSea ou Blur :
+En revanche, les plateformes [NFT]({{ '/fr/glossary/nft/' | url }}) [on-chain]({{ '/fr/glossary/on-chain/' | url }}) comme OpenSea ou Blur :
 
-- Facturent 0% à 2% de frais de transaction
-- Permettent des transferts directs de [portefeuille]({{ '/en/glossary/wallet/' | url }}) à [portefeuille]({{ '/en/glossary/wallet/' | url }})
-- Règlement rapide, échelle globale et prise en charge de l'automatisation
+-   Facturent 0 % à 2 % de frais de trading
+-   Permettent des transferts directs de [portefeuille]({{ '/fr/glossary/wallet/' | url }}) à [portefeuille]({{ '/fr/glossary/wallet/' | url }})
+-   Se règlent rapidement, s'adaptent à l'échelle mondiale et supportent l'automatisation
 
-### ✅ Du « Jour » à la « Seconde » pour le Temps de Transfert
+### ✅ De "jours" à "secondes" pour le temps de transfert
 
-- Les transferts traditionnels prennent des heures à des jours
-- Les [transferts inter-registraires]({{ '/en/glossary/cross-registrar-transfer/' | url }}) peuvent prendre **10 à 30 jours**
-- L'ajout de KYC, de paiements internationaux ou de délais de [séquestre]({{ '/en/glossary/escrow/' | url }}) ajoute encore plus de frictions
+-   Les transferts traditionnels prennent des heures à des jours
+-   Les [transferts entre registraires]({{ '/fr/glossary/cross-registrar-transfer/' | url }}) peuvent prendre **10 à 30 jours**
+-   L'ajout de KYC, de paiements internationaux ou de retards d'[escrow]({{ '/fr/glossary/escrow/' | url }}) ajoute encore plus de friction
 
 Avec Namefi :
 
-- Les transferts se finalisent en quelques secondes
-- Pas de codes d'autorisation ni d'approbations par e-mail
-- Tout est compatible avec les [contrats intelligents]({{ '/en/glossary/smart-contract/' | url }}) et l'automatisation
+-   Les transferts sont finalisés en quelques secondes
+-   Pas de codes d'autorisation ni d'approbations par email
+-   Tout est compatible avec les [contrats intelligents]({{ '/fr/glossary/smart-contract/' | url }}) et l'automatisation
 
-### ✅ S'Intégrer à une Structure de Marché Composable
+### ✅ S'intégrer à une structure de marché composable
 
 Le trading de domaines traditionnel est fermé :
 
-- Vous ne listez que sur des places de marché approuvées
-- Vous comptez sur eux pour construire des fonctionnalités d'[enchères]({{ '/en/glossary/auction/' | url }}) ou de [location]({{ '/en/glossary/leasing/' | url }})
-- L'innovation dépend de ce que la plateforme choisit d'offrir
+-   Vous listez uniquement sur les marchés approuvés
+-   Vous comptez sur eux pour construire des fonctionnalités d'[enchères]({{ '/fr/glossary/auction/' | url }}) ou de leasing
+-   L'innovation dépend de ce que la plateforme choisit d'offrir
 
-Les domaines tokenisés de Namefi sont des **actifs de couche ouverte**. N'importe qui peut construire :
+Les domaines tokenisés de Namefi sont des **actifs en couche ouverte**. N'importe qui peut construire :
 
-- Des mécanismes d'[enchères]({{ '/en/glossary/auction/' | url }}) anglaises/néerlandaises/dynamiques
-- Des protocoles de [location]({{ '/en/glossary/leasing/' | url }}) et de [location avec option d'achat]({{ '/en/glossary/rent-to-own/' | url }})
-- Des outils de [propriété fractionnée]({{ '/en/glossary/fractional-ownership/' | url }})
-- Des [lots de domaines]({{ '/en/glossary/domain-bundle/' | url }}) et des offres groupées
-- Une logique de revente avec [partage des revenus]({{ '/en/glossary/revenue-sharing/' | url }}) et des [places de marché]({{ '/en/glossary/marketplace/' | url }}) contrôlées par des [DAO]({{ '/en/glossary/dao/' | url }})
+-   Des mécanismes d'[enchères]({{ '/fr/glossary/auction/' | url }}) anglais/néerlandais/dynamiques
+-   Des protocoles de [leasing]({{ '/fr/glossary/leasing/' | url }}) et de [location-vente]({{ '/fr/glossary/rent-to-own/' | url }})
+-   Des outils de [propriété fractionnée]({{ '/fr/glossary/fractional-ownership/' | url }})
+-   Des [forfaits de domaines]({{ '/fr/glossary/domain-bundle/' | url }}) et des offres groupées
+-   Une logique de revente avec [partage de revenus]({{ '/fr/glossary/revenue-sharing/' | url }}) et des [places de marché]({{ '/fr/glossary/marketplace/' | url }}) contrôlées par des [DAO]({{ '/fr/glossary/dao/' | url }})
 
-> Les domaines deviennent des blocs Lego pour la propriété et la finance programmables — pas seulement des registres statiques.
-
----
-
-## ❗Rappel Important : Tokeniser ≠ Immunité Légale
-
-Même si vous détenez un NFT on-chain, l'**actif sous-jacent reste un domaine du monde réel**. Cela signifie :
-
-- ✅ Il doit être renouvelé annuellement (ou il expire)
-- ✅ Il doit respecter les règles légales et de l'[ICANN]({{ '/en/glossary/icann/' | url }})
-- ✅ Il peut faire l'objet de litiges (ex. [UDRP]({{ '/en/glossary/udrp/' | url }}), marque déposée)
-- ✅ Il peut être gelé ou révoqué par des ordonnances judiciaires ou des sanctions
-
-### 🧩 Analogie : NFT Immobilier ≠ Exemption Légale
-
-La tokenisation de biens immobiliers ne les exempte pas du zonage urbain, des taxes foncières ou de l'expropriation.
-
-> Namefi ne supprime pas les règles légales — il vous offre une meilleure façon de les *posséder et d'interagir avec elles*.
+> Les domaines deviennent des blocs Lego pour la propriété et la finance programmables — pas seulement des enregistrements statiques.
 
 ---
 
-## 🛡️ Le Rôle de Namefi : Un Pont Légal, Pas un Raccourci Légal
+## ❗Rappel important : Tokeniser ≠ Immunité légale
 
-- Nous ne prenons en charge que les TLDs approuvés par l'[ICANN]({{ '/en/glossary/icann/' | url }}) (`.xyz`, `.com`, `.art`, etc.)
-- Nous travaillons avec des [registraires]({{ '/en/glossary/registrar/' | url }}) accrédités
-- La propriété du jeton est maintenue en synchronisation avec les enregistrements DNS off-chain
-- Les domaines fonctionnent toujours avec le [SEO]({{ '/en/glossary/seo/' | url }}), les e-mails, la compatibilité des navigateurs, etc.
+Même si vous détenez un NFT on-chain, l'**actif sous-jacent est toujours un domaine du monde réel**. Cela signifie :
 
-Ce que vous obtenez, c'est une **véritable facilité d'utilisation** et une **véritable liberté**, pas une illusion de décentralisation.
+-   ✅ Il doit être renouvelé annuellement (ou il expire)
+-   ✅ Il doit respecter les règles légales et celles de l'[ICANN]({{ '/fr/glossary/icann/' | url }})
+-   ✅ Il peut être sujet à litige (par exemple [UDRP]({{ '/fr/glossary/udrp/' | url }}), marque déposée)
+-   ✅ Il peut être gelé ou révoqué par des ordonnances judiciaires ou des sanctions
 
----
+### 🧩 Analogie : NFT immobilier ≠ Exemption légale
 
-## ✅ Conclusion : Les Domaines On-Chain Sont une Évolution, Pas une Évasion
+La tokenisation de l'immobilier ne l'exempte pas du zonage urbain, des impôts fonciers ou de l'expropriation.
 
-> La tokenisation des domaines ne les rend pas « plus blockchain » — elle les rend *plus utilisables, appropriables et programmables*.
-
-Elle :
-
-- Ne les rend pas résistants à la censure
-- Ne contourne pas la supervision légale
-- Mais les rend **composables, transparents et natifs d'Internet**
+> Namefi ne supprime pas les règles légales — il vous offre une meilleure façon de *posséder et d'interagir au sein de celles-ci*.
 
 ---
 
-## 🚀 Prêt à Essayer ?
+## 🛡️ Le rôle de Namefi : Un pont légal, pas un raccourci légal
 
-1. Visitez [namefi.io](https://namefi.io)
-2. Recherchez un domaine du monde réel que vous aimez
-3. Enregistrez-vous et connectez votre [portefeuille]({{ '/en/glossary/wallet/' | url }}) pour recevoir son [NFT]({{ '/en/glossary/nft/' | url }})
-4. Expérimentez : listez-le, construisez avec lui, louez-le ou combinez-le
+-   Nous ne supportons que les TLDs approuvés par l'[ICANN]({{ '/fr/glossary/icann/' | url }}) (`.xyz`, `.com`, `.art`, etc.)
+-   Nous travaillons avec des [bureaux d'enregistrement]({{ '/fr/glossary/registrar/' | url }}) accrédités
+-   La propriété du jeton est maintenue synchronisée avec les enregistrements DNS hors chaîne
+-   Les domaines fonctionnent toujours avec le [SEO]({{ '/fr/glossary/seo/' | url }}), l'email, la compatibilité navigateur, etc.
 
-Bienvenue dans un monde où les **domaines ne sont pas seulement des outils de site web — ce sont des [actifs protocolaires]({{ '/en/glossary/protocol-asset/' | url }}) ouverts**.
+Ce que vous obtenez, c'est une **véritable utilisabilité** et une **véritable liberté**, pas une illusion de décentralisation.
+
+---
+
+## ✅ Conclusion : Les domaines On-Chain sont une évolution, pas une échappatoire
+
+> La tokenisation des domaines ne les rend pas "plus blockchain" — elle les rend *plus utilisables, possédables et programmables*.
+
+Cela :
+
+-   Ne les rend pas résistants à la censure
+-   Ne contourne pas la surveillance légale
+-   Mais **les rend** composables, transparents et natifs d'Internet
+
+---
+
+## 🚀 Prêt à essayer ?
+
+1.  Visitez [namefi.io](https://namefi.io)
+2.  Recherchez un domaine du monde réel que vous aimez
+3.  Enregistrez-vous et connectez votre [portefeuille]({{ '/fr/glossary/wallet/' | url }}) pour recevoir son [NFT]({{ '/fr/glossary/nft/' | url }})
+4.  Expérimentez : listez-le, construisez avec, louez-le ou combinez-le
+
+Bienvenue dans un monde où les **domaines ne sont pas seulement des outils de site web — ce sont des [actifs de protocole]({{ '/fr/glossary/protocol-asset/' | url }}) ouverts**.

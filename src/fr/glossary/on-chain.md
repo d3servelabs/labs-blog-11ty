@@ -1,5 +1,5 @@
 ---
-title: On-chain (Sur la chaîne)
+title: On-chain
 date: '2025-06-29'
 language: fr
 tags: ["glossary"]
@@ -9,4 +9,4 @@ keywords: ["on-chain","blockchain","contrats intelligents","NFT de domaine","dé
 ---
 
 
-**On-chain** fait référence aux données, aux actifs ou aux actions qui sont enregistrés directement sur une blockchain publique. Lorsqu'un domaine est "on-chain", sa propriété et sa gestion peuvent être vérifiées et transférées via des [contrats intelligents]({{ '/fr/glossary/smart-contract/' | url }}) — sans nécessiter l'approbation d'un [registraire]({{ '/fr/glossary/registrar/' | url }}) centralisé. Namefi utilise une infrastructure on-chain pour transformer les domaines en [NFTs]({{ '/fr/glossary/nft/' | url }}), permettant des transferts instantanés et [sans permission]({{ '/fr/glossary/permissionless/' | url }}) ainsi qu'une intégration avec d'autres protocoles décentralisés. Cette structure offre une plus grande transparence, programmabilité et contrôle aux détenteurs de domaines. Bien que le domaine sous-jacent réside toujours dans le [DNS]({{ '/fr/glossary/dns/' | url }}) traditionnel, sa représentation tokenisée vit on-chain en tant qu'actif sécurisé et interopérable.
+**On-chain** fait référence aux données, actifs ou actions qui sont enregistrés directement sur une blockchain publique. Lorsqu'un domaine est "on-chain", sa propriété et sa gestion peuvent être vérifiées et transférées via des [contrats intelligents]({{ '/fr/glossary/smart-contract/' | url }})—sans nécessiter l'approbation d'un [registraire]({{ '/fr/glossary/registrar/' | url }}) centralisé. Namefi utilise une infrastructure on-chain pour transformer les domaines en [NFTs]({{ '/fr/glossary/nft/' | url }}), permettant des transferts instantanés et [sans permission]({{ '/fr/glossary/permissionless/' | url }}) et une intégration avec d'autres protocoles décentralisés. Cette structure offre une plus grande transparence, programmabilité et contrôle aux détenteurs de domaines. Bien que le domaine sous-jacent réside toujours dans le [DNS]({{ '/fr/glossary/dns/' | url }}) traditionnel, sa représentation tokenisée vit on-chain comme un actif sécurisé et interopérable.

@@ -39,7 +39,7 @@ program
   .option('--lint-yaml', 'Run YAML linting before translation')
   .option('--concurrent-batches <number>', 'Number of concurrent batches (default: 5)', '5')
   .option('--batch-size <number>', 'Max files per batch (default: 10)', '10')
-  .option('--max-context-ratio <ratio>', 'Maximum context window utilization ratio (default: 0.75)', '0.75')
+  .option('--max-context-ratio <ratio>', 'Maximum context window utilization ratio (default: 0.25)', '0.25')
   .option('--token-expansion-factor <factor>', 'Translation token expansion factor (default: 1.2)', '1.2')
   .option('--no-fallback', 'Disable fallback to individual file processing on batch failures')
   .action(async (options) => {
@@ -79,7 +79,7 @@ program
       batchSize: parseInt(options.batchSize) || 10,
       fallbackSequential: !options.noFallback,
       enableUnified: true, // Always enabled now
-      maxContextRatio: parseFloat(options.maxContextRatio) || 0.75,
+      maxContextRatio: parseFloat(options.maxContextRatio) || 0.25,
       tokenExpansionFactor: parseFloat(options.tokenExpansionFactor) || 1.2
     };
     

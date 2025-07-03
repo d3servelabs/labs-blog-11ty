@@ -3,7 +3,7 @@ import { LANGUAGE_NAMES } from './config.mjs';
 // Unified multi-language prompt creator
 class UnifiedPromptCreator {
   constructor() {
-    this.maxPromptLength = 50000; // Conservative limit for prompt size
+    this.maxPromptLength = 30000; // More conservative limit for reliable processing
   }
 
   /**

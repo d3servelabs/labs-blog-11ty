@@ -40,116 +40,29 @@ class FileProcessor {
     return 'general';
   }
 
-  async translateFile(filePath, targetLang, sourceLang = 'en', skipCache = false) {
-    const startTime = Date.now();
-    
-    try {
-      // Generate current translation prompt hash for cache comparison
-      const promptHash = this.getTranslationPromptHash(sourceLang, targetLang);
-      const dependenciesHash = getDependenciesHash([], `${SCRIPT_VERSION}-${promptHash}`);
-      
-      // Check if translation is needed
-      if (!skipCache && !shouldRegenerate(filePath, 'translations', dependenciesHash)) {
-        const targetFilePath = this.generateTargetPath(filePath, targetLang, sourceLang);
-        const elapsed = Date.now() - startTime;
-        console.log(`⏭️  Skipping: ${path.basename(filePath)} -> ${targetLang} (unchanged) [${elapsed}ms]`);
-        return { success: true, filePath: targetFilePath, skipped: true, elapsed };
-      }
-      
-      const content = await fs.readFile(filePath, 'utf8');
-      const { data: frontMatter, content: markdownBody } = matter(content);
-      const contentType = this.getContentType(filePath);
-
-      // First, localize URLs in the markdown content
-      const localizedBody = URLLocalizer.localizeURLs(markdownBody, targetLang, sourceLang);
-
-      // Translate frontmatter fields with terms
-      const translatedFrontMatter = { ...frontMatter };
-      
-      if (frontMatter.title) {
-        translatedFrontMatter.title = await this.translationService.translateWithTerms(
-          frontMatter.title, targetLang, sourceLang, contentType
-        );
-      }
-      
-      if (frontMatter.description) {
-        translatedFrontMatter.description = await this.translationService.translateWithTerms(
-          frontMatter.description, targetLang, sourceLang, contentType
-        );
-      }
-      
-      if (frontMatter.keywords && contentType !== 'tld') {
-        // For most content types, translate keywords using specialized method, but keep TLD keywords technical
-        translatedFrontMatter.keywords = await this.translationService.translateKeywords(
-          frontMatter.keywords, targetLang, sourceLang, contentType
-        );
-      }
-
-      // Translate the URL-localized markdown content with full term awareness
-      const translatedBody = await this.translationService.translateWithTerms(
-        localizedBody, targetLang, sourceLang, contentType
-      );
-
-      // Update language-specific data
-      translatedFrontMatter.language = targetLang;
-
-      // Reconstruct file
-      const newContent = matter.stringify(translatedBody, translatedFrontMatter);
-
-      // Generate target file path
-      const targetFilePath = this.generateTargetPath(filePath, targetLang, sourceLang);
-      
-      if (this.dryRun) {
-        console.log(`[DRY RUN] Would translate: ${filePath} -> ${targetFilePath}`);
-        return { success: true, filePath: targetFilePath, dryRun: true };
-      }
-
-      // Create backup if requested
-      if (this.backup && await this.fileExists(targetFilePath)) {
-        await fs.copyFile(targetFilePath, `${targetFilePath}.backup`);
-      }
-
-      // Ensure target directory exists
-      await fs.mkdir(path.dirname(targetFilePath), { recursive: true });
-
-      // Write translated file
-      await fs.writeFile(targetFilePath, newContent, 'utf8');
-      
-      // Update cache
-      updateCacheEntry(filePath, 'translations', [targetFilePath], dependenciesHash);
-      
-      const elapsed = Date.now() - startTime;
-      console.log(`✅ Translated: ${path.basename(filePath)} -> ${targetLang} [${elapsed}ms]`);
-      return { success: true, filePath: targetFilePath, elapsed };
-    } catch (error) {
-      const elapsed = Date.now() - startTime;
-      return { success: false, filePath, error: error.message, elapsed };
-    }
-  }
+  // Individual translation method removed - using only unified batch processing
   
   /**
-   * Generate hash for translation prompts to detect prompt changes
-   * @param {string} sourceLang - Source language
-   * @param {string} targetLang - Target language
-   * @returns {string} Hash of translation prompts
+   * Generate hash for translation dependencies using Git hashes of script files
+   * @param {string} sourceLang - Source language (unused but kept for compatibility)
+   * @param {string} targetLang - Target language (unused but kept for compatibility)
+   * @returns {string} Hash of translation script dependencies
    */
   getTranslationPromptHash(sourceLang, targetLang) {
-    // Include key parts of the translation prompt that affect output
-    // v3.0 includes URL localization functionality
-    const promptKey = `${sourceLang}-${targetLang}-v3.0-url-localization`;
-    const promptContent = `
-      Please translate the following technical content from ${sourceLang} into ${targetLang}
-      Preserve the original meaning, but feel free to restructure for better flow
-      Use the natural tone and style of technical blog posts
-      Keep the tone clear, confident, and easy to read for developers
-      Avoid repetitive phrasing or generic AI-style introductions
-      Do not translate terms that are better left in English
-      Preserve all markdown formatting, HTML tags, and structure exactly
-      Keep code blocks, URLs, domain names, and file extensions unchanged
-      Brand names (Namefi, Ethereum, etc.) should remain unchanged
-      Translate keywords, tags, and topic sections where appropriate
-    `;
-    return getDependenciesHash([], promptKey + promptContent);
+    // Use Git hashes of the actual translation script files
+    const scriptFiles = [
+      'scripts/i18n/main.mjs',
+      'scripts/i18n/file-processor.mjs',
+      'scripts/i18n/translation-services.mjs',
+      'scripts/i18n/prompt-creator.mjs',
+      'scripts/i18n/utils.mjs',
+      'scripts/i18n/config.mjs'
+    ];
+    
+    // Include script version as additional data
+    const versionData = `${SCRIPT_VERSION}-translation-logic`;
+    
+    return getDependenciesHash(scriptFiles, versionData);
   }
 
   generateTargetPath(sourcePath, targetLang, sourceLang) {
@@ -175,7 +88,7 @@ class ParallelFileProcessor extends FileProcessor {
     this.batchSize = options.batchSize || 10;
     this.fallbackSequential = options.fallbackSequential || true;
     this.enableUnified = options.enableUnified || false;
-    this.maxContextRatio = options.maxContextRatio || 0.75;
+    this.maxContextRatio = options.maxContextRatio || 0.25;
     this.tokenExpansionFactor = options.tokenExpansionFactor || 1.2;
     this.fileLimit = pLimit(this.parallelFiles);
   }
@@ -204,8 +117,10 @@ class ParallelFileProcessor extends FileProcessor {
       enableMultiLanguage: true,
       enableTokenAwareBatching: this.enableUnified || true,
       maxBatchSize: this.batchSize,
-      maxContextRatio: this.maxContextRatio || 0.75,
-      tokenExpansionFactor: this.tokenExpansionFactor || 1.2
+      maxContextRatio: this.maxContextRatio || 0.25,
+      tokenExpansionFactor: this.tokenExpansionFactor || 1.2,
+      // Don't pass maxFilesPerBatch to let token-aware batching determine optimal size
+      enableUnifiedBatching: true
     });
     
     optimizer.printBatchPlan(batches);
@@ -338,14 +253,14 @@ class ParallelFileProcessor extends FileProcessor {
         });
       }
 
-      // Save parsed translations
-      const saveResults = await responseParser.saveTranslations(parseResults, sourceFiles, targetLanguages, sourceLang);
+      // Get dependencies hash for immediate cache updates
+      const dependenciesHash = this.getTranslationPromptHash(sourceLang, targetLanguages[0]);
+      
+      // Save parsed translations and update cache immediately for each successful pair
+      const saveResults = await responseParser.saveTranslations(parseResults, sourceFiles, targetLanguages, sourceLang, dependenciesHash);
       
       completed = saveResults.completed;
       errors = saveResults.errors;
-      
-      // Update cache for all processed files
-      this.updateUnifiedBatchCache(batch, sourceLang);
 
       console.log(`🎯 Unified batch completed: ${completed} translations from single API call`);
 
@@ -389,11 +304,13 @@ class ParallelFileProcessor extends FileProcessor {
 
   updateUnifiedBatchCache(batch, sourceLang) {
     // Update cache for all files in the unified batch
-    const promptHash = this.getTranslationPromptHash(sourceLang, Array.from(batch.allTargetLanguages)[0]);
-    const dependenciesHash = getDependenciesHash([], `${SCRIPT_VERSION}-unified-${promptHash}`);
+    const dependenciesHash = this.getTranslationPromptHash(sourceLang, Array.from(batch.allTargetLanguages)[0]);
+    
+    // In unified processing, ALL files get translated to ALL target languages
+    const allTargetLanguages = Array.from(batch.allTargetLanguages);
 
     batch.sourceFiles.forEach(sourceFileItem => {
-      const targetPaths = sourceFileItem.targetLanguages.map(lang => 
+      const targetPaths = allTargetLanguages.map(lang => 
         this.generateTargetPath(sourceFileItem.sourceFile, lang, sourceLang)
       );
       updateCacheEntry(sourceFileItem.sourceFile, 'translations', targetPaths, dependenciesHash);
@@ -401,94 +318,8 @@ class ParallelFileProcessor extends FileProcessor {
   }
 
   async processMultiLanguageBatch(batch, skipCache = false) {
-    const startTime = Date.now();
-    let completed = 0;
-    let skipped = 0;
-    let errors = [];
-    
-    // Check if we can use true batch translation (single API call for ALL files and languages)
-    const canUseBatchTranslation = batch.sourceFiles.length <= 3 && 
-                                  batch.totalTasks <= 10 && 
-                                  batch.contentType === 'glossary' &&
-                                  Array.from(batch.allTargetLanguages).length <= 3;
-    
-    if (canUseBatchTranslation && !this.dryRun) {
-      console.log(`🔥 Using single API call for ${batch.sourceFiles.length} files → ${Array.from(batch.allTargetLanguages).length} languages`);
-      
-      try {
-        const result = await this.processBatchTranslationSingleCall(batch, skipCache);
-        return result;
-      } catch (error) {
-        console.warn(`⚠️  Single API call failed: ${error.message}, falling back to individual translations`);
-        // Fall through to individual file processing
-      }
-    }
-    
-    // Process each source file in the batch to all target languages (existing approach)
-    for (const sourceFileItem of batch.sourceFiles) {
-      try {
-        // Ensure targetLanguages exists and is an array
-        if (!sourceFileItem.targetLanguages || !Array.isArray(sourceFileItem.targetLanguages)) {
-          errors.push({
-            file: sourceFileItem.sourceFile,
-            error: 'Missing target languages for source file',
-            type: 'config_error'
-          });
-          continue;
-        }
-        
-        // Translate to all target languages for this source file
-        const fileResults = await Promise.all(
-          sourceFileItem.targetLanguages.map(async (targetLang) => {
-            try {
-              const result = await this.translateFile(
-                sourceFileItem.sourceFile, 
-                targetLang, 
-                sourceFileItem.sourceLang, 
-                skipCache
-              );
-              
-              if (result.success) {
-                return result.skipped ? { skipped: 1 } : { completed: 1 };
-              } else {
-                return { 
-                  error: { 
-                    file: sourceFileItem.sourceFile, 
-                    targetLang, 
-                    error: result.error 
-                  } 
-                };
-              }
-            } catch (error) {
-              return { 
-                error: { 
-                  file: sourceFileItem.sourceFile, 
-                  targetLang, 
-                  error: error.message 
-                } 
-              };
-            }
-          })
-        );
-        
-        // Aggregate results for this source file
-        fileResults.forEach(result => {
-          if (result.completed) completed += result.completed;
-          if (result.skipped) skipped += result.skipped;
-          if (result.error) errors.push(result.error);
-        });
-        
-      } catch (error) {
-        errors.push({
-          file: sourceFileItem.sourceFile,
-          error: error.message,
-          type: 'source_file_failure'
-        });
-      }
-    }
-    
-    const elapsed = Date.now() - startTime;
-    return { completed, skipped, errors, elapsed };
+    // All multi-language batches now use unified processing only
+    return await this.processUnifiedBatch(batch, skipCache);
   }
 
   async processBatchTranslationSingleCall(batch, skipCache = false) {
@@ -690,54 +521,26 @@ class ParallelFileProcessor extends FileProcessor {
   }
 
   async processSingleLanguageBatch(batch, skipCache = false) {
-    const startTime = Date.now();
-    let completed = 0;
-    let skipped = 0;
-    let errors = [];
+    // Convert single-language batch to unified batch format and process
+    const unifiedBatch = {
+      id: batch.id,
+      type: 'unified-multi-language',
+      contentType: batch.contentType,
+      sourceFiles: batch.tasks.map(task => ({
+        sourceFile: task.sourceFile,
+        sourceLang: task.sourceLang,
+        contentType: task.contentType,
+        targetLanguages: [task.targetLang],
+        tasks: [task]
+      })),
+      allTargetLanguages: new Set([batch.targetLang]),
+      totalTasks: batch.size,
+      estimatedTokens: batch.estimatedTokens,
+      estimatedTime: batch.estimatedTime,
+      contextUtilization: 0
+    };
     
-    // Process all tasks in the batch
-    const results = await Promise.all(
-      batch.tasks.map(async (task) => {
-        try {
-          const result = await this.translateFile(
-            task.sourceFile, 
-            task.targetLang, 
-            task.sourceLang, 
-            skipCache
-          );
-          
-          if (result.success) {
-            return result.skipped ? { skipped: 1 } : { completed: 1 };
-          } else {
-            return { 
-              error: { 
-                file: task.sourceFile, 
-                targetLang: task.targetLang, 
-                error: result.error 
-              } 
-            };
-          }
-        } catch (error) {
-          return { 
-            error: { 
-              file: task.sourceFile, 
-              targetLang: task.targetLang, 
-              error: error.message 
-            } 
-          };
-        }
-      })
-    );
-    
-    // Aggregate results
-    results.forEach(result => {
-      if (result.completed) completed += result.completed;
-      if (result.skipped) skipped += result.skipped;
-      if (result.error) errors.push(result.error);
-    });
-    
-    const elapsed = Date.now() - startTime;
-    return { completed, skipped, errors, elapsed };
+    return await this.processUnifiedBatch(unifiedBatch, skipCache);
   }
 
   async processBatchesSequentially(batches, skipCache = false) {

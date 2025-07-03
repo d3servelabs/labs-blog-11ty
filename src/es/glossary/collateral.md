@@ -1,11 +1,11 @@
 ---
-title: Garantía
+title: Colateral
 date: '2025-06-30'
 language: es
 tags: ["glossary"]
 authors: ["namefiteam"]
-description: ¿Qué es una garantía y cómo pueden los dominios servir como garantía en DeFi?
-keywords: ["garantía","seguridad","préstamo","endeudamiento","garantía de dominio","DeFi"]
+description: ¿Qué es el colateral y cómo pueden los dominios servir como colateral en DeFi?
+keywords: ["colateral","seguridad","préstamo","préstamos","colateral de dominio","DeFi"]
 ---
 
-La **garantía** es un activo pignorado como seguridad para un préstamo, que el prestamista puede embargar si el prestatario incumple. En finanzas tradicionales, la garantía podría ser bienes raíces, vehículos u otros activos valiosos. En DeFi y [Web3]({{ '/es/glossary/web3/' | url }}), la garantía a menudo consiste en criptomonedas u otros activos digitales bloqueados en [contratos inteligentes]({{ '/es/glossary/smart-contract/' | url }}). Los dominios tokenizados pueden servir como garantía debido a su propiedad verificable, transferibilidad y, a menudo, valor sustancial. Un [NFT]({{ '/es/glossary/nft/' | url }}) de dominio premium como `crypto.com` o `defi.xyz` podría usarse para asegurar préstamos, participar en operaciones apalancadas o acceder a otros servicios financieros, todo ello manteniendo la utilidad y el potencial de apreciación del dominio.
+El **colateral** es un activo pignorado como garantía para un préstamo, que el prestamista puede incautar si el prestatario incumple. En las finanzas tradicionales, el colateral podría ser bienes raíces, vehículos u otros activos valiosos. En DeFi y [Web3]({{ '/es/glossary/web3/' | url }}), el colateral a menudo consiste en criptomonedas u otros activos digitales bloqueados en [contratos inteligentes]({{ '/es/glossary/smart-contract/' | url }}). Los dominios tokenizados pueden servir como colateral debido a su propiedad verificable, transferibilidad y, a menudo, valor sustancial. Un dominio [NFT]({{ '/es/glossary/nft/' | url }}) premium como `crypto.com` o `defi.xyz` podría usarse para asegurar préstamos, participar en operaciones apalancadas o acceder a otros servicios financieros, todo ello mientras se mantiene la utilidad y el potencial de apreciación del dominio.

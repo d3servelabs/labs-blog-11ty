@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { LANGUAGE_NAMES } from './config.mjs';
+import { addTranslationToCache, getGitFileHash } from '../cache-utils.mjs';
 
 // Structured response parser for unified multi-language translations
 class StructuredResponseParser {
@@ -182,9 +183,9 @@ class StructuredResponseParser {
   }
 
   /**
-   * Save parsed translations to files
+   * Save parsed translations to files and update cache immediately for each successful translation
    */
-  async saveTranslations(parseResults, sourceFiles, targetLanguages, sourceLang) {
+  async saveTranslations(parseResults, sourceFiles, targetLanguages, sourceLang, dependenciesHash) {
     let completed = 0;
     let errors = [];
 
@@ -203,8 +204,17 @@ class StructuredResponseParser {
             // Ensure target directory exists
             await fs.mkdir(path.dirname(targetFilePath), { recursive: true });
             
-            // Write translated file
+            // Write translated file and update cache immediately (atomic operation per file)
             await fs.writeFile(targetFilePath, translatedContent, 'utf8');
+            
+            // Update cache immediately after successful file write to handle concurrency
+            if (dependenciesHash) {
+              addTranslationToCache(sourceFile.filePath, targetFilePath, dependenciesHash);
+              
+              // Get the content hash for logging
+              const contentHash = getGitFileHash(sourceFile.filePath);
+              console.log(`💾 Cache updated: ${fileName} -> ${targetLang} (content: ${contentHash.substring(0, 8)}, deps: ${dependenciesHash.substring(0, 8)})`);
+            }
             
             completed++;
             console.log(`✅ Unified translation saved: ${fileName} -> ${targetLang}`);

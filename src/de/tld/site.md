@@ -4,20 +4,20 @@ date: '2025-06-21'
 language: de
 tags: ["tld"]
 authors: ["namefiteam"]
-description: .site ist eine universelle Domain, die perfekt für jede Art von Website geeignet ist. Flexibel, erschwinglich und weltweit anerkannt.
+description: .site ist eine universelle Domain, perfekt für jede Art von Website. Flexibel, erschwinglich und weltweit anerkannt.
+keywords: [".site Domain", "TLD", "universelle Domain", "Website Domain", "flexible Domain", "erschwingliche Domain", "Domain-Registrierung"]
 ---
-
 
 ## **Was ist .site?**
 
-**.site** ist eine vielseitige Top-Level-Domain (TLD, ein Domain-Suffix, das nach dem letzten Punkt in einer Internetadresse steht), die für **jede Art von Website oder Online-Präsenz** geeignet ist. Sie ist eine moderne, flexible Alternative zu traditionellen Domains.
+**.site** ist eine vielseitige Top-Level-Domain (TLD, ein Domain-Suffix, das nach dem letzten Punkt in einer Internetadresse steht), die sich für **jede Art von Website oder Online-Präsenz** eignet. Sie ist eine moderne, flexible Alternative zu traditionellen Domains.
 
 ---
 
 ## **Wie Menschen .site nutzen**
 
 *   **Persönliche Websites** und Portfolios
-*   **Business-Websites** aller Art
+*   **Geschäftswebsites** aller Art
 *   **Blog-Seiten** und Content-Plattformen
 *   **Community-Seiten** und Foren
 *   **Landing Pages** und Microsites
@@ -26,10 +26,10 @@ description: .site ist eine universelle Domain, die perfekt für jede Art von We
 
 ## **Warum .site wählen?**
 
-*   **Universelle Attraktivität**: Funktioniert für jede Art von Website
+*   **Universelle Attraktivität**: Funktioniert für jeden Website-Typ
 *   **Erschwinglich**: Kostengünstige Domain-Option
 *   **Einprägsam**: Kurz und leicht zu merken
-*   **Verfügbar**: Viele gute Namen sind noch erhältlich
+*   **Verfügbar**: Viele gute Namen sind noch verfügbar
 
 ---
 

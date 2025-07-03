@@ -26,7 +26,11 @@
       "Bash(grep:*)",
       "Bash(/dev/null)",
       "Bash(rm:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(sed:*)",
+      "Bash(for:*)",
+      "Bash(do echo \"Checking $file...\")",
+      "Bash(echo \"✅ $file is valid\")"
     ],
     "deny": []
   }

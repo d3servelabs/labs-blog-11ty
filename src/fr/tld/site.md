@@ -4,9 +4,9 @@ date: '2025-06-21'
 language: fr
 tags: ["tld"]
 authors: ["namefiteam"]
-description: .site est un domaine universel parfait pour tout type de site web. Flexible, abordable et mondialement reconnu.
+description: .site est un domaine universel parfait pour tout type de site web. Flexible, abordable et reconnu mondialement.
+keywords: [".site domaine", "TLD", "domaine universel", "domaine de site web", "domaine flexible", "domaine abordable", "enregistrement de domaine"]
 ---
-
 
 ## **Qu'est-ce que .site ?**
 
@@ -18,7 +18,7 @@ description: .site est un domaine universel parfait pour tout type de site web. 
 
 *   **Sites web personnels** et portfolios
 *   **Sites web d'entreprise** de tous types
-*   **Sites de blogs** et plateformes de contenu
+*   **Sites de blog** et plateformes de contenu
 *   **Sites communautaires** et forums
 *   **Pages de destination** et microsites
 
@@ -26,7 +26,7 @@ description: .site est un domaine universel parfait pour tout type de site web. 
 
 ## **Pourquoi choisir .site ?**
 
-*   **Attrait Universel**: Fonctionne pour tout type de site web
+*   **Attrait universel**: Convient à tout type de site web
 *   **Abordable**: Option de domaine économique
 *   **Mémorable**: Court et facile à retenir
 *   **Disponible**: De nombreux bons noms sont encore disponibles
