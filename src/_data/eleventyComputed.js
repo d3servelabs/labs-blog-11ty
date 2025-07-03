@@ -1,6 +1,6 @@
 export default {
-  eleventyComputed: {
-    "meta.ogImage": data => {
+  meta: {
+    ogImage: function(data) {
       const pathStem = data.page.filePathStem;
       
       // Extract language and content path from filePathStem
@@ -15,8 +15,8 @@ export default {
         return `/og/${lang}/${path}.png`;
       }
       
-      // Fallback for unexpected paths
-      return `/og${pathStem}.png`;
+      // Fallback for unexpected paths or homepage
+      return `/opengraph.jpg`;
     }
   }
 };
