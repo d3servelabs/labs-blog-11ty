@@ -27,7 +27,7 @@
 - 避免部分匹配造成的误链接
 
 **链接格式要求：**
-- 统一使用 `[term]({{ '/en/blog/glossary/term/' | url }})` 格式
+- 统一使用 `[term]({{ '/en/glossary/term/' | url }})` 格式
 - 确保baseURL="/r"配置正确应用
 - 保持原文的markdown结构
 
@@ -67,7 +67,7 @@
 ### 3.3 核心功能模块
 
 #### 词汇表术语提取器
-- 扫描 `src/en/blog/glossary/` 目录
+- 扫描 `src/en/glossary/` 目录
 - 提取每个文件的标题作为主要术语
 - 生成术语变体（复数、大小写、连字符变化）
 - 创建术语到URL的映射表
@@ -130,15 +130,15 @@ scripts/
 ### 4.2 配置示例
 ```json
 {
-  "glossaryPath": "src/en/blog/glossary/",
+  "glossaryPath": "src/en/glossary/",
   "articlePaths": [
     "src/en/blog/*.md",
-    "src/en/blog/tld/*.md"
+    "src/en/tld/*.md"
   ],
   "excludePaths": [
-    "src/en/blog/glossary/*"
+    "src/en/glossary/*"
   ],
-  "linkTemplate": "[{term}]({{ '/en/blog/glossary/{slug}/' | url }})",
+  "linkTemplate": "[{term}]({{ '/en/glossary/{slug}/' | url }})",
   "backup": true,
   "linksPerParagraph": 1,
   "ignoredTerms": ["the", "and", "or"]
@@ -241,7 +241,7 @@ npm run glossary:link -- --help
 - Marketplace → NFTs, wallets, escrow, smart contracts
 
 ### 链接格式验证
-所有链接均使用格式：`[term]({{ '/en/blog/glossary/term/' | url }})`
+所有链接均使用格式：`[term]({{ '/en/glossary/term/' | url }})`
 确保与Eleventy配置的baseURL="/r"兼容。
 
 ---

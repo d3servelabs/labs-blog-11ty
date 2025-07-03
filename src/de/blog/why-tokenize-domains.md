@@ -36,13 +36,13 @@ In diesem Artikel erklären wir ganz einfach, was „Tokenisierung von Domains�
 
 Die Tokenisierung von Domains ist wie der Wechsel von **physischer Post über ein Postamt** zu **E-Mails über das Internet**.
 
-Im traditionellen System werden Domain-Besitz und -Übertragungen von [Registraren]({{ '/en/blog/glossary/registrar/' | url }}) (quasi „autorisierten Postämtern“) abgewickelt. Wenn ein [Registrar]({{ '/en/blog/glossary/registrar/' | url }}) den Dienst verweigert oder deine Region nur lizenzierte Betreiber zulässt, kann deine Übertragung verzögert oder sogar blockiert werden.
+Im traditionellen System werden Domain-Besitz und -Übertragungen von [Registraren]({{ '/en/glossary/registrar/' | url }}) (quasi „autorisierten Postämtern“) abgewickelt. Wenn ein [Registrar]({{ '/en/glossary/registrar/' | url }}) den Dienst verweigert oder deine Region nur lizenzierte Betreiber zulässt, kann deine Übertragung verzögert oder sogar blockiert werden.
 
-On-Chain-Domains funktionieren eher wie E-Mails: **Jede kompatible [Wallet]({{ '/en/blog/glossary/wallet/' | url }}), Plattform oder jedes Protokoll kann sie frei senden, empfangen, handeln oder darauf aufbauen**. Ohne Gatekeeper.
+On-Chain-Domains funktionieren eher wie E-Mails: **Jede kompatible [Wallet]({{ '/en/glossary/wallet/' | url }}), Plattform oder jedes Protokoll kann sie frei senden, empfangen, handeln oder darauf aufbauen**. Ohne Gatekeeper.
 
-Das reduziert nicht nur die Kosten (von hohen Maklergebühren auf fast null) oder verkürzt die Wartezeiten (von Tagen auf Sekunden) – es **schafft Raum für Innovation**. So wie sich E-Mails von reinem Textversand zu Gruppen-Workflows, Dateianhängen und Automatisierung weiterentwickelt haben, **schalten tokenisierte Domains neue Funktionalitäten frei**, wie [Auktionen]({{ '/en/blog/glossary/auction/' | url }}) (holländisch, englisch, dynamisch), [Leasing]({{ '/en/blog/glossary/leasing/' | url }}), [Teileigentum]({{ '/en/blog/glossary/fractional-ownership/' | url }}), Bündelungen und mehr.
+Das reduziert nicht nur die Kosten (von hohen Maklergebühren auf fast null) oder verkürzt die Wartezeiten (von Tagen auf Sekunden) – es **schafft Raum für Innovation**. So wie sich E-Mails von reinem Textversand zu Gruppen-Workflows, Dateianhängen und Automatisierung weiterentwickelt haben, **schalten tokenisierte Domains neue Funktionalitäten frei**, wie [Auktionen]({{ '/en/glossary/auction/' | url }}) (holländisch, englisch, dynamisch), [Leasing]({{ '/en/glossary/leasing/' | url }}), [Teileigentum]({{ '/en/glossary/fractional-ownership/' | url }}), Bündelungen und mehr.
 
-> Es ist der Wandel von einem System mit Gatekeepern zu einer internet-nativen, [permissionless]({{ '/en/blog/glossary/permissionless/' | url }}) Asset-Ebene.
+> Es ist der Wandel von einem System mit Gatekeepern zu einer internet-nativen, [permissionless]({{ '/en/glossary/permissionless/' | url }}) Asset-Ebene.
 
 ---
 
@@ -52,12 +52,12 @@ Tokenisieren bedeutet einfach:
 
 > Einen realen Vermögenswert (wie eine Domain) als Token abzubilden, um ihn übertragbar, komponierbar und programmierbar zu machen.
 
-Bei Namefi wird jede Domain, die du registrierst (z. B. `mybrand.xyz`), automatisch durch einen [NFT]({{ '/en/blog/glossary/nft/' | url }}) repräsentiert. Du kannst:
+Bei Namefi wird jede Domain, die du registrierst (z. B. `mybrand.xyz`), automatisch durch einen [NFT]({{ '/en/glossary/nft/' | url }}) repräsentiert. Du kannst:
 
 - Sie an andere übertragen, so wie man ETH sendet
 - Nutzungsrechte gewähren, ohne das Eigentum zu übertragen
 - Sie auf Marktplätzen wie OpenSea zum Verkauf anbieten
-- Sie mit Contracts, [DAOs]({{ '/en/blog/glossary/dao/' | url }}), Webseiten oder anderen Apps kombinieren
+- Sie mit Contracts, [DAOs]({{ '/en/glossary/dao/' | url }}), Webseiten oder anderen Apps kombinieren
 
 Das verleiht dem Domain-Besitz neue Flexibilität und Nützlichkeit.
 
@@ -65,16 +65,16 @@ Das verleiht dem Domain-Besitz neue Flexibilität und Nützlichkeit.
 
 ## 🌉 Die Brücke von realen Assets in die On-Chain-Welt
 
-Durch die Tokenisierung von Domains fungiert Namefi als **Brücke** zwischen der traditionellen [DNS]({{ '/en/blog/glossary/dns/' | url }})-Infrastruktur und offenen Blockchain-Protokollen:
+Durch die Tokenisierung von Domains fungiert Namefi als **Brücke** zwischen der traditionellen [DNS]({{ '/en/glossary/dns/' | url }})-Infrastruktur und offenen Blockchain-Protokollen:
 
 | Traditionelles System       | On-Chain-Welt                         |
 |--------------------------|----------------------------------------|
-| Datenbank im Besitz des [Registrars]({{ '/en/blog/glossary/registrar/' | url }}) | [Smart Contracts]({{ '/en/blog/glossary/smart-contract/' | url }}) auf öffentlichen Blockchains  |
-| Manuelle Übertragungen, Reibungsverluste | Sofortige, [atomare Übertragungen]({{ '/en/blog/glossary/atomic-transfer/' | url }})             |
-| Statische Einträge            | [Komponierbar]({{ '/en/blog/glossary/composability/' | url }}) mit DeFi, Identitäten, [DAOs]({{ '/en/blog/glossary/dao/' | url }})  |
+| Datenbank im Besitz des [Registrars]({{ '/en/glossary/registrar/' | url }}) | [Smart Contracts]({{ '/en/glossary/smart-contract/' | url }}) auf öffentlichen Blockchains  |
+| Manuelle Übertragungen, Reibungsverluste | Sofortige, [atomare Übertragungen]({{ '/en/glossary/atomic-transfer/' | url }})             |
+| Statische Einträge            | [Komponierbar]({{ '/en/glossary/composability/' | url }}) mit DeFi, Identitäten, [DAOs]({{ '/en/glossary/dao/' | url }})  |
 | Zentralisierte Verifizierung  | Eigentum on-chain nachweisbar         |
 
-Du „least“ nicht mehr nur einen Namen – du hältst ein **programmierbares, digitales Gateway-Asset** in deiner eigenen [Wallet]({{ '/en/blog/glossary/wallet/' | url }}).
+Du „least“ nicht mehr nur einen Namen – du hältst ein **programmierbares, digitales Gateway-Asset** in deiner eigenen [Wallet]({{ '/en/glossary/wallet/' | url }}).
 
 ---
 
@@ -89,16 +89,16 @@ Die Übertragung von Domains erfordert traditionell:
 - E-Mails, Wartezeiten und manuelle Genehmigungen
 - Verzögerungen zwischen Registraren (oft 5–7+ Tage)
 
-Mit Namefi wird das Eigentum durch eine einzige Transaktion übertragen – innerhalb von Sekunden. Du kannst auch Genehmigungen festlegen, Manager zuweisen oder die Delegierung über [Smart Contracts]({{ '/en/blog/glossary/smart-contract/' | url }}) automatisieren.
+Mit Namefi wird das Eigentum durch eine einzige Transaktion übertragen – innerhalb von Sekunden. Du kannst auch Genehmigungen festlegen, Manager zuweisen oder die Delegierung über [Smart Contracts]({{ '/en/glossary/smart-contract/' | url }}) automatisieren.
 
 ### ✅ 2. Klareres Eigentum & nutzerkontrollierter Zugriff
 
-Bei traditionellen [Registraren]({{ '/en/blog/glossary/registrar/' | url }}) (wie GoDaddy) besitzt du zwar eine Lizenz für eine Domain, aber die **wahre Kontrolle liegt oft bei einem Treuhänder ([custodial]({{ '/en/blog/glossary/custodial-ownership/' | url }}))** – abhängig von deren Benutzeroberfläche, deren Bedingungen und deren Plattformrichtlinien.
+Bei traditionellen [Registraren]({{ '/en/glossary/registrar/' | url }}) (wie GoDaddy) besitzt du zwar eine Lizenz für eine Domain, aber die **wahre Kontrolle liegt oft bei einem Treuhänder ([custodial]({{ '/en/glossary/custodial-ownership/' | url }}))** – abhängig von deren Benutzeroberfläche, deren Bedingungen und deren Plattformrichtlinien.
 
 Mit Namefi:
 
-- Dein Eigentum wird [on-chain]({{ '/en/blog/glossary/on-chain/' | url }}) als [NFT]({{ '/en/blog/glossary/nft/' | url }}) erfasst
-- Du verwaltest es mit deiner eigenen [Wallet]({{ '/en/blog/glossary/wallet/' | url }}) – nicht über ein gehostetes Konto
+- Dein Eigentum wird [on-chain]({{ '/en/glossary/on-chain/' | url }}) als [NFT]({{ '/en/glossary/nft/' | url }}) erfasst
+- Du verwaltest es mit deiner eigenen [Wallet]({{ '/en/glossary/wallet/' | url }}) – nicht über ein gehostetes Konto
 - Obwohl weiterhin die realen DNS-Regeln gelten (Verlängerungen, rechtmäßige Nutzung), ist deine **Kontrolle kryptografisch gesichert**
 
 > Es geht nicht um „dauerhafte, zensurfreie Domains“ – es geht um *klareres, nutzerzentriertes Eigentum*.
@@ -107,10 +107,10 @@ Mit Namefi:
 
 Tokenisierte Domains können:
 
-- Als [Sicherheit]({{ '/en/blog/glossary/collateral/' | url }}) in [Lending-Protokollen]({{ '/en/blog/glossary/lending-protocol/' | url }}) verwendet werden
-- Mit dezentralen Identitäten ([DID]({{ '/en/blog/glossary/did/' | url }})), [Farcaster]({{ '/en/blog/glossary/farcaster/' | url }}), [Lens]({{ '/en/blog/glossary/lens/' | url }}) etc. verknüpft werden
+- Als [Sicherheit]({{ '/en/glossary/collateral/' | url }}) in [Lending-Protokollen]({{ '/en/glossary/lending-protocol/' | url }}) verwendet werden
+- Mit dezentralen Identitäten ([DID]({{ '/en/glossary/did/' | url }})), [Farcaster]({{ '/en/glossary/farcaster/' | url }}), [Lens]({{ '/en/glossary/lens/' | url }}) etc. verknüpft werden
 - Über Namefi sofort mit KI-generierten Webseiten verbunden werden
-- Teamübergreifend, in [DAOs]({{ '/en/blog/glossary/dao/' | url }}) oder über [Multi-Sig]({{ '/en/blog/glossary/multi-sig/' | url }})-Setups verwaltet werden
+- Teamübergreifend, in [DAOs]({{ '/en/glossary/dao/' | url }}) oder über [Multi-Sig]({{ '/en/glossary/multi-sig/' | url }})-Setups verwaltet werden
 
 ---
 
@@ -118,45 +118,45 @@ Tokenisierte Domains können:
 
 Das ist vielleicht das revolutionärste, aber oft übersehene Merkmal:
 
-> Durch die Tokenisierung werden Domains zu *offenen [Protokoll-Assets]({{ '/en/blog/glossary/protocol-asset/' | url }})* – jeder kann darauf aufbauend Dienste, Börsen oder Finanzanwendungen entwickeln.
+> Durch die Tokenisierung werden Domains zu *offenen [Protokoll-Assets]({{ '/en/glossary/protocol-asset/' | url }})* – jeder kann darauf aufbauend Dienste, Börsen oder Finanzanwendungen entwickeln.
 
 ### ✅ Dramatisch niedrigere Handelskosten
 
-Traditionelle Domain-[Marktplätze]({{ '/en/blog/glossary/marketplace/' | url }}) (z. B. GoDaddy, Sedo) verlangen oft **15 %–30 %+ an Gebühren**, bieten langsame Auszahlungen und geschlossene APIs.
+Traditionelle Domain-[Marktplätze]({{ '/en/glossary/marketplace/' | url }}) (z. B. GoDaddy, Sedo) verlangen oft **15 %–30 %+ an Gebühren**, bieten langsame Auszahlungen und geschlossene APIs.
 
-Im Gegensatz dazu verlangen [on-chain]({{ '/en/blog/glossary/on-chain/' | url }}) [NFT]({{ '/en/blog/glossary/nft/' | url }})-Plattformen wie OpenSea oder Blur:
+Im Gegensatz dazu verlangen [on-chain]({{ '/en/glossary/on-chain/' | url }}) [NFT]({{ '/en/glossary/nft/' | url }})-Plattformen wie OpenSea oder Blur:
 
 - 0 %–2 % Handelsgebühren
-- Ermöglichen direkte Übertragungen von [Wallet]({{ '/en/blog/glossary/wallet/' | url }}) zu [Wallet]({{ '/en/blog/glossary/wallet/' | url }})
+- Ermöglichen direkte Übertragungen von [Wallet]({{ '/en/glossary/wallet/' | url }}) zu [Wallet]({{ '/en/glossary/wallet/' | url }})
 - sind schnell, global skalierbar und unterstützen Automatisierung
 
 ### ✅ Von „Tagen“ zu „Sekunden“ bei der Übertragungszeit
 
 - Traditionelle Übertragungen dauern Stunden bis Tage
-- [Übertragungen zwischen Registraren]({{ '/en/blog/glossary/cross-registrar-transfer/' | url }}) können **10–30 Tage** dauern
-- Zusätzliche KYC-Prüfungen, internationale Zahlungen oder [Escrow]({{ '/en/blog/glossary/escrow/' | url }})-Dienste verursachen noch mehr Reibungsverluste
+- [Übertragungen zwischen Registraren]({{ '/en/glossary/cross-registrar-transfer/' | url }}) können **10–30 Tage** dauern
+- Zusätzliche KYC-Prüfungen, internationale Zahlungen oder [Escrow]({{ '/en/glossary/escrow/' | url }})-Dienste verursachen noch mehr Reibungsverluste
 
 Mit Namefi:
 
 - Übertragungen sind in Sekunden abgeschlossen
 - Keine Autorisierungscodes oder E-Mail-Bestätigungen
-- Alles ist mit [Smart Contracts]({{ '/en/blog/glossary/smart-contract/' | url }}) und Automatisierung kompatibel
+- Alles ist mit [Smart Contracts]({{ '/en/glossary/smart-contract/' | url }}) und Automatisierung kompatibel
 
 ### ✅ An eine komponierbare Marktstruktur anknüpfen
 
 Der traditionelle Domain-Handel ist ein geschlossenes System:
 
 - Man kann nur auf zugelassenen Marktplätzen listen
-- Man ist darauf angewiesen, dass sie [Auktions-]({{ '/en/blog/glossary/auction/' | url }}) oder Leasing-Funktionen entwickeln
+- Man ist darauf angewiesen, dass sie [Auktions-]({{ '/en/glossary/auction/' | url }}) oder Leasing-Funktionen entwickeln
 - Innovation hängt davon ab, was die Plattform anbietet
 
 Die tokenisierten Domains von Namefi sind **Assets auf einer offenen Ebene**. Jeder kann darauf aufbauen:
 
-- Englische/Holländische/dynamische [Auktionsmechanismen]({{ '/en/blog/glossary/auction/' | url }})
-- [Leasing-]({{ '/en/blog/glossary/leasing/' | url }}) und [Mietkauf-Protokolle]({{ '/en/blog/glossary/rent-to-own/' | url }})
-- Tools für [Teileigentum]({{ '/en/blog/glossary/fractional-ownership/' | url }})
-- [Domain-Bündel]({{ '/en/blog/glossary/domain-bundle/' | url }}) und Paketangebote
-- Wiederverkaufslogik mit [Umsatzbeteiligung]({{ '/en/blog/glossary/revenue-sharing/' | url }}) und von [DAOs]({{ '/en/blog/glossary/dao/' | url }}) gesteuerte [Marktplätze]({{ '/en/blog/glossary/marketplace/' | url }})
+- Englische/Holländische/dynamische [Auktionsmechanismen]({{ '/en/glossary/auction/' | url }})
+- [Leasing-]({{ '/en/glossary/leasing/' | url }}) und [Mietkauf-Protokolle]({{ '/en/glossary/rent-to-own/' | url }})
+- Tools für [Teileigentum]({{ '/en/glossary/fractional-ownership/' | url }})
+- [Domain-Bündel]({{ '/en/glossary/domain-bundle/' | url }}) und Paketangebote
+- Wiederverkaufslogik mit [Umsatzbeteiligung]({{ '/en/glossary/revenue-sharing/' | url }}) und von [DAOs]({{ '/en/glossary/dao/' | url }}) gesteuerte [Marktplätze]({{ '/en/glossary/marketplace/' | url }})
 
 > Domains werden zu Lego-Bausteinen für programmierbares Eigentum und Finanzen – und sind nicht länger nur statische Einträge.
 
@@ -167,8 +167,8 @@ Die tokenisierten Domains von Namefi sind **Assets auf einer offenen Ebene**. Je
 Auch wenn du einen NFT on-chain hältst, ist der **zugrundeliegende Vermögenswert immer noch eine reale Domain**. Das bedeutet:
 
 - ✅ Sie muss jährlich erneuert werden (sonst läuft sie ab)
-- ✅ Sie muss den gesetzlichen und [ICANN]({{ '/en/blog/glossary/icann/' | url }})-Regeln entsprechen
-- ✅ Sie kann Gegenstand von Streitigkeiten sein (z. B. [UDRP]({{ '/en/blog/glossary/udrp/' | url }}), Markenrecht)
+- ✅ Sie muss den gesetzlichen und [ICANN]({{ '/en/glossary/icann/' | url }})-Regeln entsprechen
+- ✅ Sie kann Gegenstand von Streitigkeiten sein (z. B. [UDRP]({{ '/en/glossary/udrp/' | url }}), Markenrecht)
 - ✅ Sie kann durch Gerichtsbeschlüsse oder Sanktionen eingefroren oder entzogen werden
 
 ### 🧩 Analogie: Immobilien-NFT ≠ Rechtliche Ausnahme
@@ -181,10 +181,10 @@ Die Tokenisierung einer Immobilie befreit nicht von Bebauungsplänen, Grundsteue
 
 ## 🛡️ Die Rolle von Namefi: Eine rechtliche Brücke, keine rechtliche Abkürzung
 
-- Wir unterstützen nur von der [ICANN]({{ '/en/blog/glossary/icann/' | url }}) genehmigte TLDs (`.xyz`, `.com`, `.art` usw.)
-- Wir arbeiten mit akkreditierten [Registraren]({{ '/en/blog/glossary/registrar/' | url }}) zusammen
+- Wir unterstützen nur von der [ICANN]({{ '/en/glossary/icann/' | url }}) genehmigte TLDs (`.xyz`, `.com`, `.art` usw.)
+- Wir arbeiten mit akkreditierten [Registraren]({{ '/en/glossary/registrar/' | url }}) zusammen
 - Der Token-Besitz wird mit den Off-Chain-DNS-Einträgen synchron gehalten
-- Domains funktionieren weiterhin mit [SEO]({{ '/en/blog/glossary/seo/' | url }}), E-Mail, Browser-Kompatibilität usw.
+- Domains funktionieren weiterhin mit [SEO]({{ '/en/glossary/seo/' | url }}), E-Mail, Browser-Kompatibilität usw.
 
 Was du bekommst, ist **echte Nutzbarkeit** und **echte Freiheit**, nicht die Illusion von Dezentralisierung.
 
@@ -206,7 +206,7 @@ Sie:
 
 1. Besuche [namefi.io](https://namefi.io)
 2. Suche nach einer realen Domain, die dir gefällt
-3. Registriere sie und verbinde deine [Wallet]({{ '/en/blog/glossary/wallet/' | url }}), um den dazugehörigen [NFT]({{ '/en/blog/glossary/nft/' | url }}) zu erhalten
+3. Registriere sie und verbinde deine [Wallet]({{ '/en/glossary/wallet/' | url }}), um den dazugehörigen [NFT]({{ '/en/glossary/nft/' | url }}) zu erhalten
 4. Experimentiere: Biete sie zum Verkauf an, baue darauf, verlease sie oder kombiniere sie
 
-Willkommen in einer Welt, in der **Domains nicht nur Werkzeuge für Webseiten sind – sondern offene [Protokoll-Assets]({{ '/en/blog/glossary/protocol-asset/' | url }})**.
+Willkommen in einer Welt, in der **Domains nicht nur Werkzeuge für Webseiten sind – sondern offene [Protokoll-Assets]({{ '/en/glossary/protocol-asset/' | url }})**.
