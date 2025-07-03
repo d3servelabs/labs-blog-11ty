@@ -19,7 +19,7 @@
     "start": "eleventy --serve --watch --pathprefix=/r/",
     "gen:og": "node scripts/prebuild-og-images.mjs",
     "build": "eleventy",
-    "gen:i18n": "node scripts/translate.mjs",
+    "gen:i18n": "node scripts/i18n/main.mjs",
     "lint:yaml": "node scripts/lint-yaml.mjs"
   },
   "dependencies": {

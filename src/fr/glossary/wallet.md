@@ -1,0 +1,12 @@
+---
+title: Portefeuille (Wallet)
+date: '2025-06-30'
+language: fr
+tags: ["glossary"]
+authors: ["namefiteam"]
+description: Qu'est-ce qu'un portefeuille crypto et comment stocke-t-il les domaines tokenisés ?
+keywords: ["portefeuille","portefeuille crypto","clé privée","stockage d'actifs numériques","stockage de domaine"]
+---
+
+
+Un **portefeuille** dans le contexte des cryptos est un outil numérique qui stocke les clés privées et permet aux utilisateurs de gérer leurs actifs basés sur la blockchain. Contrairement aux portefeuilles traditionnels qui contiennent de la monnaie physique, les portefeuilles crypto contiennent les clés de [sécurité cryptographique]({{ '/fr/glossary/cryptographic-security/' | url }}) qui prouvent la propriété d'actifs numériques tels que les cryptomonnaies et les [NFTs]({{ '/fr/glossary/nft/' | url }}). Lorsque vous tokénisez un domaine avec Namefi, le [NFT]({{ '/fr/glossary/nft/' | url }}) de domaine résultant est stocké dans votre portefeuille, vous donnant une [propriété de garde]({{ '/fr/glossary/custodial-ownership/' | url }}) et un contrôle directs. Les portefeuilles populaires incluent MetaMask, Coinbase Wallet et les portefeuilles matériels comme Ledger. Votre portefeuille devient votre portail pour gérer, transférer et interagir avec vos domaines tokenisés sans dépendre de plateformes centralisées.

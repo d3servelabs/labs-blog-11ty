@@ -171,3 +171,11 @@ The translation system automatically localizes URLs within content to maintain p
 - **Namefi**: Always spelled as "Namefi" (not "NameFi" or other variations)
 - This is the correct branding for the domain tokenization platform
 - All content, translations, and documentation must maintain this exact spelling
+
+## Memories 
+
+### Translation Architecture
+- Memorize the current translate architecture which includes multi-service batch translation with Gemini 2.5 Pro
+- Supports intelligent caching, URL localization, and specialized keywords translation
+- Handles translations for blog, tld, glossary, and partners content types
+- Uses advanced caching mechanisms to optimize translation performance and reduce unnecessary API calls
